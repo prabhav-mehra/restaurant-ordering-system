@@ -14,10 +14,20 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var PasswordText: UITextField!
     @IBOutlet weak var LoginButton: UIButton!
     @IBOutlet weak var ErrorLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        setUpElements()
         // Do any additional setup after loading the view.
+    }
+    
+    func setUpElements() {
+        ErrorLabel.alpha = 0
+        
+        Utilities.styleTextField(EmailText)
+        Utilities.styleTextField(PasswordText)
+        Utilities.styleFilledButton(LoginButton)
     }
     
 
