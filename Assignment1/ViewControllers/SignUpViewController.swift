@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
+import FirebaseFirestore
 
 class SignUpViewController: UIViewController {
 
@@ -39,20 +42,76 @@ class SignUpViewController: UIViewController {
         Utilities.styleFilledButton(SignUpButton)
     }
     
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func validateFields() -> String? {
+        if FirstNameText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+         LastNameText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+         EmailText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+            PasswordText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            
+            return "Please fill in all fields"
+        }
+        let cleanedPassword = PasswordText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if Utilities.isPasswordValid(cleanedPassword) == false{
+            return "Please Make sure your password contains at least 8 characters, contains a special character and atleast one number."
+        }
+        
+        return nil
     }
-    */
     @IBAction func SignUpTapped(_ sender: Any) {
         //Validate Fields and Create user.
         
+        let error = validateFields()
+        
+        if error != nil {
+            showError(error!)
+        }
+        
+        else {
+            let firstName = FirstNameText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let lastName = LastNameText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let email = EmailText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let pass = PasswordText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            Auth.auth().createUser(withEmail: email, password: pass) { (result, err) in
+                
+                
+                if err != nil {
+                    
+                    self.showError("Error Creating User!")
+                }
+                
+                else {
+                    
+                    let db = Firestore.firestore()
+
+                    db.collection("users").addDocument(data: ["firstname":firstName,"lastname":lastName,"uid":result!.user.uid]) { (error) in
+
+                        if error != nil {
+                            self.showError("Error saving user data!")
+                        }
+
+                    }
+
+                    self.transitionToHome()
+                }
+            }
+            
+        }
+    }
+    
+    func showError (_ message:String){
+        ErrorLabel.text = message
+        ErrorLabel.alpha = 1
+    }
+    
+    func transitionToHome() {
+
+        let homeViewController = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
+
+        view.window?.rootViewController = homeViewController
+        view.window?.makeKeyAndVisible()
+
     }
     
 }

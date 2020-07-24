@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -127,7 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				1852785824CB3AD100E7D3E5 /* GoogleService-Info.plist */,
-				1852785324CB363100E7D3E5 /* New Group */,
+				1852785324CB363100E7D3E5 /* Helpers */,
 				1852785024CAE13700E7D3E5 /* ViewControllers */,
 				1852781C24CAE0AE00E7D3E5 /* AppDelegate.swift */,
 				1852782024CAE0AE00E7D3E5 /* Main.storyboard */,
@@ -167,13 +167,13 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		1852785324CB363100E7D3E5 /* New Group */ = {
+		1852785324CB363100E7D3E5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				1852785624CB364600E7D3E5 /* Constants.swift */,
 				1852785424CB364300E7D3E5 /* Utilities.swift */,
 			);
-			path = "New Group";
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		45AEC437B45486AA1142A1A2 /* Pods */ = {
@@ -186,7 +186,6 @@
 				1351687C3D7A3219C34FA7EF /* Pods-Assignment1Tests.debug.xcconfig */,
 				680CFAEB449844CDADEFB6A9 /* Pods-Assignment1Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

@@ -19,17 +19,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="Fig-LN-pGT">
-                                <rect key="frame" x="40" y="694" width="334" height="100"/>
+                                <rect key="frame" x="40" y="694" width="334" height="128"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5j-lZ-hgy">
-                                        <rect key="frame" x="0.0" y="0.0" width="334" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="334" height="44"/>
                                         <state key="normal" title="Sign Up"/>
                                         <connections>
                                             <segue destination="bnB-ZS-Irm" kind="show" id="ZIU-qY-LcL"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ihD-jC-LYj">
-                                        <rect key="frame" x="0.0" y="70" width="334" height="30"/>
+                                        <rect key="frame" x="0.0" y="84" width="334" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="JwN-3T-6Qb"/>
                                         </constraints>
@@ -231,7 +231,7 @@
         <!--Home View Controller-->
         <scene sceneID="IAG-Uz-bGW">
             <objects>
-                <viewController id="4F1-J4-9Zh" customClass="HomeViewController" customModule="Assignment1" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeVC" id="4F1-J4-9Zh" customClass="HomeViewController" customModule="Assignment1" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1HM-VO-IWC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
