@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
+import FirebaseFirestore
 
 class HomeViewController: UIViewController {
-
+   
     override func viewDidLoad() {
         super.viewDidLoad()
 

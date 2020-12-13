@@ -9,6 +9,8 @@ target 'Assignment1' do
   pod 'Firebase/Auth'
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
+  pod 'DLRadioButton', '~> 1.4'
+  pod 'Firebase/Database'
 
 
   # Pods for Assignment1

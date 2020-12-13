@@ -7,8 +7,16 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
+import FirebaseFirestore
+import FirebaseDatabase
 
 class LoginViewController: UIViewController {
+    
+    var ref: DatabaseReference!
+    var db: Firestore!
+    
 
     @IBOutlet weak var EmailText: UITextField!
     @IBOutlet weak var PasswordText: UITextField!
@@ -17,7 +25,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        ref = Database.database().reference()
         setUpElements()
         // Do any additional setup after loading the view.
     }
@@ -41,6 +49,69 @@ class LoginViewController: UIViewController {
     }
     */
     @IBAction func LoginButtonTapped(_ sender: Any) {
+        let email = EmailText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let password = PasswordText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        Auth.auth().signIn(withEmail: email, password: password){
+            (result,error) in
+            
+            if error != nil {
+                self.ErrorLabel.text = error!.localizedDescription
+                self.ErrorLabel.alpha = 1
+            }
+            else{
+                
+                let homeViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
+                 let resturantViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.resturantViewController) as? ResturantHomeViewController
+                
+//                self.view.window?.rootViewController = homeViewController
+//                self.view.window?.makeKeyAndVisible()
+                self.getName{ (name) in
+                    if(name == "resturant"){
+                        self.view.window?.rootViewController = resturantViewController
+                        self.view.window?.makeKeyAndVisible()
+                    }
+                    else{
+                        self.view.window?.rootViewController = homeViewController
+                        self.view.window?.makeKeyAndVisible()
+                    }
+                    print(name)
+                }
+
+            }
+        }
+       
     }
+    
+  
+        
+      
+        
+    
+        func getName(Completion: @escaping((String) -> ())) {
+            let user = Auth.auth().currentUser
+            
+            let collectionRefernce:CollectionReference!
+            let db = Firestore.firestore()
+            collectionRefernce = db.collection("users")
+            collectionRefernce.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("Error is \(error!.localizedDescription)")
+                } else {
+                    guard let snapshot = querySnapshot else { return }
+                    for document in snapshot.documents {
+                        let myData = document.data()
+                        let uid = myData["uid"] as? String ?? "No Name Found"
+                        if user!.uid == uid {
+                            let option = myData["option"] as? String ?? "No Name Found"
+                            Completion(option)
+                        }
+                        
+                    }
+                }
+            }
+        }
+            
+
     
 }

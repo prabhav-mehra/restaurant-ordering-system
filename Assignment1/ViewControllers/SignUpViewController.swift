@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import FirebaseFirestore
+import DLRadioButton
 
 class SignUpViewController: UIViewController {
 
@@ -21,16 +22,48 @@ class SignUpViewController: UIViewController {
    
     @IBOutlet weak var PasswordText: UITextField!
    
+    @IBOutlet weak var resturantRadio: UIButton!
     @IBOutlet weak var SignUpButton: UIButton!
     
+    @IBOutlet weak var userRadio: UIButton!
     @IBOutlet weak var ErrorLabel: UILabel!
     
+    var radioResult = " "
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpElements()
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func optionButtonSlelected(_ sender: UIButton) {
+        
+        if sender.tag == 1{
+            resturantRadio.isSelected = true
+            userRadio.isSelected = false
+            radioResult = "resturant"
+        
+        }
+        
+        else if sender.tag == 2{
+           
+            userRadio.isSelected = true
+            resturantRadio.isSelected = false
+            radioResult = "user"
+           
+           
+            
+        }
+        else{
+               radioResult = "none"
+               ErrorLabel.text = "Please select one option"
+        }
+        
+       
+        
+        
+    }
+    
     
     func setUpElements() {
         ErrorLabel.alpha = 0
@@ -85,7 +118,7 @@ class SignUpViewController: UIViewController {
                     
                     let db = Firestore.firestore()
 
-                    db.collection("users").addDocument(data: ["firstname":firstName,"lastname":lastName,"uid":result!.user.uid]) { (error) in
+                    db.collection("users").addDocument(data: ["firstname":firstName,"lastname":lastName,"uid":result!.user.uid,"email":email,"option":self.radioResult]) { (error) in
 
                         if error != nil {
                             self.showError("Error saving user data!")
@@ -108,10 +141,30 @@ class SignUpViewController: UIViewController {
     func transitionToHome() {
 
         let homeViewController = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
+        
+        let resturantViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.resturantViewController) as? ResturantHomeViewController
+        
+        if(self.radioResult == "resturant"){
+            view.window?.rootViewController = resturantViewController
+            view.window?.makeKeyAndVisible()
+        }
+        
+        else{
+            view.window?.rootViewController = homeViewController
+            view.window?.makeKeyAndVisible()
+        }
 
+     
+
+    }
+    
+    func transitionToLogin() {
+        
+        let homeViewController = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
+        
         view.window?.rootViewController = homeViewController
         view.window?.makeKeyAndVisible()
-
+        
     }
     
 }
