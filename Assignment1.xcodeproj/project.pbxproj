@@ -21,7 +21,9 @@
 		1852785524CB364300E7D3E5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1852785424CB364300E7D3E5 /* Utilities.swift */; };
 		1852785724CB364600E7D3E5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1852785624CB364600E7D3E5 /* Constants.swift */; };
 		1852785924CB3AD100E7D3E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1852785824CB3AD100E7D3E5 /* GoogleService-Info.plist */; };
+		18A284B12585EFD6006C9C8C /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A284B02585EFD6006C9C8C /* TableViewCell.swift */; };
 		18D33270258485B800AC3BEE /* ResturantHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D3326F258485B800AC3BEE /* ResturantHomeViewController.swift */; };
+		18F9E7592588EBFC00AD31CB /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9E7582588EBFB00AD31CB /* Items.swift */; };
 		259C1D7BD1934BA81D689C37 /* Pods_Assignment1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1569F400FFB3AA6A80E8CC36 /* Pods_Assignment1.framework */; };
 		FE61B130D07A9A82100123E8 /* Pods_Assignment1Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85E25535DD710258ACE3E610 /* Pods_Assignment1Tests.framework */; };
 /* End PBXBuildFile section */
@@ -66,7 +68,9 @@
 		1852785424CB364300E7D3E5 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		1852785624CB364600E7D3E5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1852785824CB3AD100E7D3E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		18A284B02585EFD6006C9C8C /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		18D3326F258485B800AC3BEE /* ResturantHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResturantHomeViewController.swift; sourceTree = "<group>"; };
+		18F9E7582588EBFB00AD31CB /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		680CFAEB449844CDADEFB6A9 /* Pods-Assignment1Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assignment1Tests.release.xcconfig"; path = "Target Support Files/Pods-Assignment1Tests/Pods-Assignment1Tests.release.xcconfig"; sourceTree = "<group>"; };
 		7762C69E5853952E301B8389 /* Pods_Assignment1_Assignment1UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assignment1_Assignment1UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85E25535DD710258ACE3E610 /* Pods_Assignment1Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assignment1Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +132,7 @@
 		1852781B24CAE0AE00E7D3E5 /* Assignment1 */ = {
 			isa = PBXGroup;
 			children = (
+				18F9E7572588EBE400AD31CB /* Model */,
 				1852785824CB3AD100E7D3E5 /* GoogleService-Info.plist */,
 				1852785324CB363100E7D3E5 /* Helpers */,
 				1852785024CAE13700E7D3E5 /* ViewControllers */,
@@ -166,6 +171,7 @@
 				1852784C24CAE12300E7D3E5 /* LoginViewController.swift */,
 				1852784E24CAE12D00E7D3E5 /* HomeViewController.swift */,
 				18D3326F258485B800AC3BEE /* ResturantHomeViewController.swift */,
+				18A284B02585EFD6006C9C8C /* TableViewCell.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -177,6 +183,14 @@
 				1852785424CB364300E7D3E5 /* Utilities.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		18F9E7572588EBE400AD31CB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				18F9E7582588EBFB00AD31CB /* Items.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		45AEC437B45486AA1142A1A2 /* Pods */ = {
@@ -445,8 +459,10 @@
 				1852785524CB364300E7D3E5 /* Utilities.swift in Sources */,
 				1852784F24CAE12D00E7D3E5 /* HomeViewController.swift in Sources */,
 				1852784D24CAE12300E7D3E5 /* LoginViewController.swift in Sources */,
+				18A284B12585EFD6006C9C8C /* TableViewCell.swift in Sources */,
 				1852784B24CAE11200E7D3E5 /* SignUpViewController.swift in Sources */,
 				18D33270258485B800AC3BEE /* ResturantHomeViewController.swift in Sources */,
+				18F9E7592588EBFC00AD31CB /* Items.swift in Sources */,
 				1852785724CB364600E7D3E5 /* Constants.swift in Sources */,
 				1852781F24CAE0AE00E7D3E5 /* ViewController.swift in Sources */,
 				1852781D24CAE0AE00E7D3E5 /* AppDelegate.swift in Sources */,

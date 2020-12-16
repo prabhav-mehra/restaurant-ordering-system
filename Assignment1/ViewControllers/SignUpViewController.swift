@@ -91,6 +91,7 @@ class SignUpViewController: UIViewController {
         
         return nil
     }
+    
     @IBAction func SignUpTapped(_ sender: Any) {
         //Validate Fields and Create user.
         
