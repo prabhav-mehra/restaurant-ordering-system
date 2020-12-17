@@ -10,13 +10,17 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import FirebaseFirestore
+import os.log
 
 class ResturantHomeViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITableViewDelegate, UITableViewDataSource {
   
     
-   
+    let user = Auth.auth().currentUser
+
     let db = Firestore.firestore()
    
+    var refresher: UIRefreshControl!
+    
     let cellReuseIdentifier = "cell"
     
     @IBOutlet weak var textView: UITextView!
@@ -46,6 +50,10 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     var toDoItems = [Items]()
     var addedItems = [Items]()
     
+    var loadedItems = [Items]()
+    
+    var refreshControl = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.clipsToBounds = true
@@ -65,8 +73,50 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         itemTableView.estimatedRowHeight = 44.0
         itemTableView.rowHeight = UITableView.automaticDimension
 
+        if(addedItems.count == 0) {
+            print("none")
+            db.collection("items").getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let myData =  document.data()
+                        let name = myData["name"]
+                        let desc = myData["desc"]
+                        let price = myData["price"]
+                        let uid = myData["uid"]
+                        if((uid as! String) == self.user?.uid) {
+                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String)
+                                else {
+                                    fatalError("Unable to instantiate Item")
+                            }
+                            self.toDoItems.append(item)
+                            self.loadedItems.append(item)
+                        }
+//
+                    }
+                }
+            }
+            
+        }
+        
+         self.itemTableView.reloadData()
         // Do any additional setup after loading the view.
     }
+    
+    @objc func refresh(sender:AnyObject) {
+
+        self.itemTableView.reloadData()
+        
+        self.refreshControl.endRefreshing()
+        
+//        self.refreshControl!.endRefreshing()
+    }
+    
+    
+//    func refresh() {
+//        itemTableView.reloadData(); //refresh the table
+//    }
     
     
     private func setData() {
@@ -78,7 +128,7 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     
 
     @IBAction func saveToDatabase(_ sender: Any) {
-    
+        let user = Auth.auth().currentUser
         
         
         for index in 0..<toDoItems.count {
@@ -89,28 +139,28 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
             else {
                 fatalError("Unable to instantiate Item")
             }
-            if !storedItems.contains(where: { name in name.name == city.name }) && !storedItems.contains(where: { desc in desc.desc == city.desc } ) {
+            if !loadedItems.contains(where: { name in name.name == city.name }) && !loadedItems.contains(where: { desc in desc.desc == city.desc } ) {
                 print("doesnt")
                 print(city.name)
 
 
-                db.collection("items").addDocument(data: ["name":city.name,"desc":city.desc,"price":city.price]){ (error) in
+                db.collection("items").addDocument(data: ["name":city.name,"desc":city.desc,"price":city.price,"uid":user!.uid]){ (error) in
 
                         if error != nil {
                             print("Error saving user data!")
                         }
                     }
-                storedItems.append(city)
+                loadedItems.append(city)
             }
-            else{
-                let alert = UIAlertController(title: "Alert", message: "No New Items added", preferredStyle: UIAlertController.Style.alert)
-                
-                // add an action (button)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                
-                // show the alert
-                self.present(alert, animated: true, completion: nil)
-            }
+//            else{
+//                let alert = UIAlertController(title: "Alert", message: "No New Items added", preferredStyle: UIAlertController.Style.alert)
+//
+//                // add an action (button)
+//                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+//
+//                // show the alert
+//                self.present(alert, animated: true, completion: nil)
+//            }
 
         }
         
@@ -129,12 +179,21 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         itemTableView.reloadData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        itemTableView.reloadData()
+    }
+    
     
 
     
     
     
     @IBAction func addToCell(_ sender: Any) {
+        
+        
         print(addedItems.count)
         print(toDoItems.count)
         if(!( itemNameText.text!.isEmpty ||  descText.text!.isEmpty || priceText.text!.isEmpty )){
@@ -166,14 +225,16 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let cell:UITableViewCell = (self.itemTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as UITableViewCell?)!
         
-     
-        cell.textLabel!.numberOfLines = 0
-        cell.textLabel!.lineBreakMode = .byWordWrapping
-        let item = toDoItems[indexPath.row]
-        addedItems.append(item)
-        cell.textLabel?.text = item.name + "\n" + item.desc + "\n" + item.price 
+            cell.textLabel!.numberOfLines = 0
+            cell.textLabel!.lineBreakMode = .byWordWrapping
+            let item = toDoItems[indexPath.row]
+            addedItems.append(item)
+            cell.textLabel?.text = item.name + "\n" + item.desc + "\n" + item.price
+//          cell.textLabel?.text = "j"
+
 
         return cell
     }
