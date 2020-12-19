@@ -13,6 +13,8 @@ import FirebaseFirestore
 import DLRadioButton
 
 class SignUpViewController: UIViewController {
+    
+    
 
     @IBOutlet weak var FirstNameText: UITextField!
    
@@ -141,19 +143,22 @@ class SignUpViewController: UIViewController {
     
     func transitionToHome() {
 
-        let homeViewController = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
+        let homeViewController = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.ViewController) as? ViewController
         
-        let resturantViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.resturantViewController) as? ResturantHomeViewController
+//        let resturantViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.resturantViewController) as? ResturantHomeViewController
         
-        if(self.radioResult == "resturant"){
-            view.window?.rootViewController = resturantViewController
-            view.window?.makeKeyAndVisible()
-        }
+        view.window?.rootViewController = homeViewController
+        view.window?.makeKeyAndVisible()
         
-        else{
-            view.window?.rootViewController = homeViewController
-            view.window?.makeKeyAndVisible()
-        }
+//        if(self.radioResult == "resturant"){
+//            view.window?.rootViewController = resturantViewController
+//            view.window?.makeKeyAndVisible()
+//        }
+//        
+//        else{
+//            view.window?.rootViewController = homeViewController
+//            view.window?.makeKeyAndVisible()
+//        }
 
      
 

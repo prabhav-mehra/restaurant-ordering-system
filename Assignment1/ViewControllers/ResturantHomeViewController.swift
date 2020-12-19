@@ -11,9 +11,12 @@ import FirebaseAuth
 import Firebase
 import FirebaseFirestore
 import os.log
+import MessageUI
 
-class ResturantHomeViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class ResturantHomeViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, UITextFieldDelegate {
   
+    
+    var floatingButton: UIButton?
     
     let user = Auth.auth().currentUser
 
@@ -54,16 +57,25 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     
     var refreshControl = UIRefreshControl()
     
+    
+    private enum ConstantsButton {
+        static let trailingValue: CGFloat = 15.0
+        static let leadingValue: CGFloat = 15.0
+        static let buttonHeight: CGFloat = 75.0
+        static let buttonWidth: CGFloat = 75.0
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.black.cgColor
-    
+        priceText.delegate = self;
         textView!.layer.borderWidth = 1
         textView!.layer.borderColor = UIColor.black.cgColor
-        
+
         self.itemTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         
        
@@ -72,7 +84,7 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         itemTableView.dataSource = self
         itemTableView.estimatedRowHeight = 44.0
         itemTableView.rowHeight = UITableView.automaticDimension
-
+        createFloatingButton()
         if(addedItems.count == 0) {
             print("none")
             db.collection("items").getDocuments() { (querySnapshot, err) in
@@ -103,27 +115,71 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
          self.itemTableView.reloadData()
         // Do any additional setup after loading the view.
     }
-    
-    @objc func refresh(sender:AnyObject) {
 
-        self.itemTableView.reloadData()
-        
-        self.refreshControl.endRefreshing()
-        
-//        self.refreshControl!.endRefreshing()
+    
+    
+    private func createFloatingButton() {
+        floatingButton = UIButton(type: .custom)
+        floatingButton?.backgroundColor = .clear
+        floatingButton?.translatesAutoresizingMaskIntoConstraints = false
+        constrainFloatingButtonToWindow()
+        floatingButton?.setImage(UIImage(named: "floatButton"), for: .normal)
+        floatingButton?.addTarget(self, action: #selector(doThisWhenButtonIsTapped(_:)), for: .touchUpInside)
     }
     
+    private func constrainFloatingButtonToWindow() {
+        DispatchQueue.main.async {
+            guard let keyWindow = UIApplication.shared.keyWindow,
+                let floatingButton = self.floatingButton else { return }
+            keyWindow.addSubview(floatingButton)
+            keyWindow.trailingAnchor.constraint(equalTo: floatingButton.trailingAnchor,
+                                                constant: ConstantsButton.trailingValue).isActive = true
+            keyWindow.bottomAnchor.constraint(equalTo: floatingButton.bottomAnchor,
+                                              constant: ConstantsButton.leadingValue).isActive = true
+            floatingButton.widthAnchor.constraint(equalToConstant:
+                ConstantsButton.buttonWidth).isActive = true
+            floatingButton.heightAnchor.constraint(equalToConstant:
+                ConstantsButton.buttonHeight).isActive = true
+        }
+    }
     
-//    func refresh() {
-//        itemTableView.reloadData(); //refresh the table
-//    }
+    @IBAction private func doThisWhenButtonIsTapped(_ sender: Any) {
+
+//        print("Tapped")
+        let image = generateQRCode(from: user!.uid)
+        imageView.image = image
+        sendMail(imageView: imageView)
+        print(image!)
+    }
     
+   
     
     private func setData() {
         let data: [String: Any] = [:]
         // [START set_data]
         db.collection("cities").document("new-city-id").setData(data)
         // [END set_data]
+    }
+    
+    func sendMail(imageView: UIImageView) {
+        if MFMailComposeViewController.canSendMail() {
+            print("sent")
+            let mail = MFMailComposeViewController()
+         
+                 mail.mailComposeDelegate = self;
+                 mail.setToRecipients(["prabhavmehra69@gmail.com"])
+                 mail.setSubject("Your messagge")
+                 mail.setMessageBody("Message body", isHTML: false)
+            let imageData: NSData = imageView.image!.pngData()! as NSData
+            mail.addAttachmentData(imageData as Data, mimeType: "image/png", fileName: "imageName.png")
+            self.present(mail, animated: true, completion: nil)
+        } else {
+            // show failure alert
+        }
+    }
+   
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
     
 
@@ -152,20 +208,28 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
                     }
                 loadedItems.append(city)
             }
-//            else{
-//                let alert = UIAlertController(title: "Alert", message: "No New Items added", preferredStyle: UIAlertController.Style.alert)
-//
-//                // add an action (button)
-//                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-//
-//                // show the alert
-//                self.present(alert, animated: true, completion: nil)
-//            }
 
         }
-        
   
     }
+    
+    func generateQRCode(from string: String) -> UIImage? {
+        let data = string.data(using: String.Encoding.ascii)
+        
+        if let filter = CIFilter(name: "CIQRCodeGenerator") {
+            filter.setValue(data, forKey: "inputMessage")
+            let transform = CGAffineTransform(scaleX: 10, y: 10)
+            
+            if let output = filter.outputImage?.transformed(by: transform) {
+                return UIImage(ciImage: output)
+            }
+        }
+        
+        return nil
+    }
+    
+    
+
     
     
     
@@ -233,8 +297,6 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
             let item = toDoItems[indexPath.row]
             addedItems.append(item)
             cell.textLabel?.text = item.name + "\n" + item.desc + "\n" + item.price
-//          cell.textLabel?.text = "j"
-
 
         return cell
     }
@@ -273,14 +335,31 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         self.dismiss(animated: true, completion: nil)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+  
+    @IBAction func logoutTapped(_ sender: Any) {
+        
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            print("signed out")
+            transitionToLogin()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
     }
-    */
-
+    
+    func transitionToLogin() {
+        
+        let ViewController = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.ViewController) as? ViewController
+        
+        view.window?.rootViewController = ViewController
+        view.window?.makeKeyAndVisible()
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        priceText.resignFirstResponder()
+        return true
+    }
+    
 }
