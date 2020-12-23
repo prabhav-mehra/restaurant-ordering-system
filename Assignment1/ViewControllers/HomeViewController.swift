@@ -17,6 +17,8 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     var floatingButton: UIButton?
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
+  
+    var qrCode = String()
     
     private enum ConstantsButton {
         static let trailingValue: CGFloat = 15.0
@@ -32,41 +34,7 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         
         captureSession = AVCaptureSession()
         
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
-              let videoInput: AVCaptureDeviceInput
-
-              do {
-                  videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-              } catch {
-                  return
-              }
-
-              if (captureSession.canAddInput(videoInput)) {
-                  captureSession.addInput(videoInput)
-              } else {
-                  failed()
-                  return
-              }
-
-              let metadataOutput = AVCaptureMetadataOutput()
-
-              if (captureSession.canAddOutput(metadataOutput)) {
-                  captureSession.addOutput(metadataOutput)
-
-                  metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                  metadataOutput.metadataObjectTypes = [.qr]
-              } else {
-                  failed()
-                  return
-              }
-
-              previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-              previewLayer.frame = view.layer.bounds
-              previewLayer.videoGravity = .resizeAspectFill
-              view.layer.addSublayer(previewLayer)
-
-              captureSession.startRunning()
-        
+      
 
         // Do any additional setup after loading the view.
     }
@@ -95,11 +63,18 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                 ConstantsButton.buttonHeight).isActive = true
         }
     }
-    
-    @IBAction private func doThisWhenButtonIsTapped(_ sender: Any) {
+//
+//    @IBAction private func doThisWhenButtonIsTapped(_ sender: Any) {
+//
+//        print("Tapped")
+//
+//    }
 
-        print("Tapped")
+    @IBAction func changeToDetail(_ sender: Any) {
         
+        self.show(DetailViewController(), sender: self)
+ 
+    
     }
     
     func failed() {
@@ -107,22 +82,6 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
             captureSession = nil
-        }
-
-        override func viewWillAppear(_ animated: Bool) {
-            super.viewWillAppear(animated)
-
-            if (captureSession?.isRunning == false) {
-                captureSession.startRunning()
-            }
-        }
-
-        override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-
-            if (captureSession?.isRunning == true) {
-                captureSession.stopRunning()
-            }
         }
 
         func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
@@ -136,10 +95,20 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             }
 
             dismiss(animated: true)
+
         }
 
         func found(code: String) {
             print(code)
+            qrCode = code
+            self.captureSession?.stopRunning()
+            previewLayer?.isHidden = true
+            previewLayer.removeFromSuperlayer()
+            
+            let menuView = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
+            
+            view.window?.rootViewController = menuView
+            view.window?.makeKeyAndVisible()
         }
 
         override var prefersStatusBarHidden: Bool {
@@ -149,6 +118,47 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
             return .portrait
         }
+    
+    @IBAction func doThisWhenButtonIsTapped(_ sender: Any) {
+       view.backgroundColor = UIColor.black
+       captureSession = AVCaptureSession()
+
+       guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
+       let videoInput: AVCaptureDeviceInput
+
+       do {
+           videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
+       } catch {
+           return
+       }
+
+       if (captureSession.canAddInput(videoInput)) {
+           captureSession.addInput(videoInput)
+       } else {
+           failed()
+           return
+       }
+
+       let metadataOutput = AVCaptureMetadataOutput()
+
+       if (captureSession.canAddOutput(metadataOutput)) {
+           captureSession.addOutput(metadataOutput)
+
+           metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+           metadataOutput.metadataObjectTypes = [.qr]
+       } else {
+           failed()
+           return
+       }
+
+       previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+       previewLayer.frame = view.layer.bounds
+       previewLayer.videoGravity = .resizeAspectFill
+       view.layer.addSublayer(previewLayer)
+
+       captureSession.startRunning()
+   }
+    
     
 
     /*

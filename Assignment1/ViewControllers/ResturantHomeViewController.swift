@@ -18,6 +18,7 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     
     var floatingButton: UIButton?
     
+    
     let user = Auth.auth().currentUser
 
     let db = Firestore.firestore()
@@ -56,6 +57,8 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     var loadedItems = [Items]()
     
     var refreshControl = UIRefreshControl()
+    
+    var docId = ""
     
     
     private enum ConstantsButton {
@@ -145,22 +148,17 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     
     @IBAction private func doThisWhenButtonIsTapped(_ sender: Any) {
 
-//        print("Tapped")
+
         let image = generateQRCode(from: user!.uid)
-        imageView.image = image
-        sendMail(imageView: imageView)
+        let barcodeImage = UIImageView(image: image!)
+        barcodeImage.frame = CGRect(x: 0, y: 0, width: 100, height: 200)
+
+        sendMail(imageView: barcodeImage )
         print(image!)
     }
     
    
-    
-    private func setData() {
-        let data: [String: Any] = [:]
-        // [START set_data]
-        db.collection("cities").document("new-city-id").setData(data)
-        // [END set_data]
-    }
-    
+ 
     func sendMail(imageView: UIImageView) {
         if MFMailComposeViewController.canSendMail() {
             print("sent")
@@ -185,7 +183,20 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
 
     @IBAction func saveToDatabase(_ sender: Any) {
         let user = Auth.auth().currentUser
-        
+       
+        if Auth.auth().currentUser != nil {
+            db.collection("users").whereField("uid", isEqualTo: "\(user!.uid)").getDocuments { (querySnapshot, error) in
+                   if let error = error {
+                       print("Error getting documents: \(error)")
+                   } else {
+                    for document in querySnapshot!.documents {
+                        
+//                           print(document.documentID)
+                           self.docId = document.documentID
+                        }
+                   }
+               }
+           }
         
         for index in 0..<toDoItems.count {
             let element = toDoItems[index]
@@ -195,12 +206,26 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
             else {
                 fatalError("Unable to instantiate Item")
             }
-            if !loadedItems.contains(where: { name in name.name == city.name }) && !loadedItems.contains(where: { desc in desc.desc == city.desc } ) {
-                print("doesnt")
-                print(city.name)
+            if !loadedItems.contains(where: { name in name.name == city.name }) && !loadedItems.contains(where: { desc in desc.desc == city.desc }){
+                print(docId)
+                
+//                let washingtonRef = db.collection("users").document(self.docId)
+//
+//                // Set the "capital" field of the city 'DC'
+//                washingtonRef.updateData([
+//                    "image":"a"
+//                ]) { err in
+//                    if let err = err {
+//                        print("Error updating document: \(err)")
+//                    } else {
+//                        print("Document successfully updated")
+//                    }
+//                }
 
 
-                db.collection("items").addDocument(data: ["name":city.name,"desc":city.desc,"price":city.price,"uid":user!.uid]){ (error) in
+
+
+                db.collection("items").addDocument(data: ["name":city.name,"desc":city.desc,"price":city.price,"uid":user!.uid] ){ (error) in
 
                         if error != nil {
                             print("Error saving user data!")
@@ -228,12 +253,7 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         return nil
     }
     
-    
 
-    
-    
-    
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return toDoItems.count
