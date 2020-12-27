@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
+import FirebaseFirestore
 
 class DetailViewController: UIViewController {
     
@@ -16,6 +19,8 @@ class DetailViewController: UIViewController {
         let vc = InfoViewController()
         return vc
     }()
+    
+    
     
     lazy var sectionTitleIndexCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -37,8 +42,21 @@ class DetailViewController: UIViewController {
     var yContraint: NSLayoutConstraint?
     var lContraint: NSLayoutConstraint?
     var rContraint: NSLayoutConstraint?
-    var meals: [Meal] = Meal.loadDemoMeals()
-    var mealSections: [String] = Meal.loadMealSections()
+    var meals = Meal.loadDemoMeals()
+//    var mealSections: [String] = Meal.loadMealSections()
+    var mealSections = [String]()
+  
+    let db = Firestore.firestore()
+    let testvC = HomeViewController()
+    
+    init(mealSections: [String]) {
+        self.mealSections = mealSections
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     lazy var backButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.system)
@@ -77,6 +95,34 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let fav = [String]()
+//        mealSections = testvC.myArrayFunc(inputArray: fav)
+//        print(mealSections)
+        
+//        db.collection("items").getDocuments() { (querySnapshot, err) in
+//            if let err = err {
+//                print("Error getting documents: \(err)")
+//            } else {
+//                for document in querySnapshot!.documents {
+//                    let myData =  document.data()
+//                    let name = myData["name"]
+//                    let desc = myData["desc"]
+//                    let price = myData["price"]
+//                    let uid = myData["uid"]
+//                    let category = myData["category"]
+//                    if((uid as! String) == uid as! String) {
+//                        guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
+//                            else {
+//                                fatalError("Unable to instantiate Item")
+//                        }
+//                        self.mealSections.append(item.category)
+//
+//                    }
+//                }
+//            }
+//        }
+        print(self.mealSections)
+      
         setupViews()
         setupGesture()
        
@@ -131,18 +177,18 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
         if (collectionView == self.sectionTitleIndexCollectionView) {
             return 1
         } else {
-            return (mealSections.count + 1) // added one section for MenuCell and InfoCell
+            return (self.mealSections.count + 1) // added one section for MenuCell and InfoCell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if (collectionView == self.sectionTitleIndexCollectionView) {
-            return mealSections.count
+            return self.mealSections.count
         } else {
             if (section == 0) {
                 return 2
             } else {
-                let rows = Meal.loadMealsForSection(sectionName: mealSections[section-1], meals: meals)
+                let rows = Meal.loadMealsForSection(sectionName: self.mealSections[section-1], meals: meals)
                 return rows.count
             }
         }
@@ -151,7 +197,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (collectionView == self.sectionTitleIndexCollectionView) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SectionTitleIndexCell", for: indexPath) as! SectionTitleIndexCollectionViewCell
-            cell.sectionTitle = mealSections[indexPath.row]
+            cell.sectionTitle = self.mealSections[indexPath.row]
             return cell
         } else {
             if (indexPath.section == 0) && (indexPath.row == 0) {
@@ -165,7 +211,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
                 return menuCell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCollectionViewCell
-                let rows = Meal.loadMealsForSection(sectionName: mealSections[(indexPath.section-1)], meals: meals)
+                let rows = Meal.loadMealsForSection(sectionName: self.mealSections[(indexPath.section-1)], meals: meals)
                 cell.meal = rows[indexPath.row]
                 return cell
             }
@@ -174,7 +220,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if (collectionView == self.sectionTitleIndexCollectionView) {
-            let text = mealSections[indexPath.row]
+            let text = self.mealSections[indexPath.row]
             let length = text.count
             return CGSize(width: (length*10), height: 40)
         } else {
@@ -255,7 +301,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
                 return header
             } else if (kind == UICollectionView.elementKindSectionHeader) && (indexPath.section != 0) {
                 let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader", for: indexPath) as! SectionHeaderView
-                sectionHeader.title = mealSections[indexPath.section-1]
+                sectionHeader.title = self.mealSections[indexPath.section-1]
                 return sectionHeader
             } else {
                 let emptyCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "EmptyCell", for: indexPath)

@@ -7,8 +7,12 @@
 //
 
 import Foundation
+import FirebaseAuth
+import Firebase
+import FirebaseFirestore
 
 struct Meal {
+    
     var name: String
     var description: String
     var price: Float
@@ -27,7 +31,9 @@ struct Meal {
         self.price = 0.00
         self.type = ""
     }
-    static func loadMealSections() -> [String] {
+     static func loadMealSections() -> [String] {
+       
+
         let sections: [String] = ["Recommended", "Beef Tacos", "Seafood Tacos", "Chicken Tacos", "Pork Tacos",
                                   "Veggie Tacos", "Quesadillas", "Skillets", "Main", "Chips and Dips", "Sides",
                                   "Starters","Salads","Sweets", "Kids Menu"]
@@ -43,6 +49,9 @@ struct Meal {
     static func loadDemoMeals() -> [Meal] {
         
         // Recommended
+        
+        
+//        var meal = [Meal]()
         let m1 = Meal(name: "Gus's Favorite Taco",
                       description: "Fired chicken, bacon, Cheddar cheese, pico de gallo, and chipotle ranch.",
                       type: "Recommended",
@@ -322,8 +331,10 @@ struct Meal {
                        description: "Served with tater tots.",
                        type: "Kids Menu",
                        price: 7.05)
+        
+
 
         return [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52, m53, m54, m55, m56, m57, m58, m59, m60, m61, m62, m63, m64, m65, m4x]
-        
+//        return meal
     }
 }

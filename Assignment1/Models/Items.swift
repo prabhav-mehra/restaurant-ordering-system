@@ -15,9 +15,10 @@ class Items {
     var name: String
     var desc: String
     var price: String
+    var category: String
    
     //MARK Initialization
-    init?(name: String, desc: String, price: String){
+    init?(name: String, desc: String, price: String,category: String){
         
         
         if name.isEmpty {
@@ -28,6 +29,7 @@ class Items {
         self.name = name
         self.desc = desc
         self.price = price
+        self.category = category
       
     }
     
@@ -36,8 +38,9 @@ class Items {
         let name = aDecoder.decodeObject(forKey: "name") as! String
         let desc = aDecoder.decodeObject(forKey: "desc") as! String
         let price = aDecoder.decodeObject(forKey: "price") as! String
+        let category = aDecoder.decodeObject(forKey: "category") as! String
        
-        self.init( name: name, desc: desc, price: price)!
+        self.init( name: name, desc: desc, price: price,category:category)!
     }
     
     func encode(with aCoder: NSCoder) {
@@ -45,6 +48,7 @@ class Items {
         aCoder.encode(name, forKey: "name")
         aCoder.encode(desc, forKey: "desc")
         aCoder.encode(price, forKey: "price")
+        aCoder.encode(price, forKey: "category")
       
     }
     

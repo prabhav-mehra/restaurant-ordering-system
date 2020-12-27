@@ -9,11 +9,12 @@
 import UIKit
 
 class SectionTitleIndexCollectionView: UICollectionView {
-    
-    var sectionTitles: [String] = {
-        let mls = Meal.loadMealSections()
-        return mls
-    }()
+  
+   
+//    var sectionTitles: [String] = {
+//        let mls = Meal.loadMealSections()
+//        return mls
+//    }()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)

@@ -49,6 +49,8 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     
     @IBOutlet weak var saveButton: UIButton!
     
+    @IBOutlet weak var categoryText: UITextField!
+    
     var storedItems = [Items]()
     
     var toDoItems = [Items]()
@@ -100,15 +102,15 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
                         let desc = myData["desc"]
                         let price = myData["price"]
                         let uid = myData["uid"]
+                        let category = myData["category"]
                         if((uid as! String) == self.user?.uid) {
-                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String)
+                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
                                 else {
                                     fatalError("Unable to instantiate Item")
                             }
                             self.toDoItems.append(item)
                             self.loadedItems.append(item)
                         }
-//
                     }
                 }
             }
@@ -184,30 +186,30 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     @IBAction func saveToDatabase(_ sender: Any) {
         let user = Auth.auth().currentUser
        
-        if Auth.auth().currentUser != nil {
-            db.collection("users").whereField("uid", isEqualTo: "\(user!.uid)").getDocuments { (querySnapshot, error) in
-                   if let error = error {
-                       print("Error getting documents: \(error)")
-                   } else {
-                    for document in querySnapshot!.documents {
-                        
-//                           print(document.documentID)
-                           self.docId = document.documentID
-                        }
-                   }
-               }
-           }
+//        if Auth.auth().currentUser != nil {
+//            db.collection("users").whereField("uid", isEqualTo: "\(user!.uid)").getDocuments { (querySnapshot, error) in
+//                   if let error = error {
+//                       print("Error getting documents: \(error)")
+//                   } else {
+//                    for document in querySnapshot!.documents {
+//
+////                           print(document.documentID)
+//                           self.docId = document.documentID
+//                        }
+//                   }
+//               }
+//           }
         
         for index in 0..<toDoItems.count {
             let element = toDoItems[index]
 
 
-            guard let city = Items(name: element.name, desc: element.desc, price: element.price)
+            guard let city = Items(name: element.name, desc: element.desc, price: element.price,category: element.category)
             else {
                 fatalError("Unable to instantiate Item")
             }
             if !loadedItems.contains(where: { name in name.name == city.name }) && !loadedItems.contains(where: { desc in desc.desc == city.desc }){
-                print(docId)
+//                print(docId)
                 
 //                let washingtonRef = db.collection("users").document(self.docId)
 //
@@ -225,7 +227,7 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
 
 
 
-                db.collection("items").addDocument(data: ["name":city.name,"desc":city.desc,"price":city.price,"uid":user!.uid] ){ (error) in
+                db.collection("items").addDocument(data: ["name":city.name,"desc":city.desc,"price":city.price,"uid":user!.uid,"category": city.category] ){ (error) in
 
                         if error != nil {
                             print("Error saving user data!")
@@ -281,7 +283,7 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         print(addedItems.count)
         print(toDoItems.count)
         if(!( itemNameText.text!.isEmpty ||  descText.text!.isEmpty || priceText.text!.isEmpty )){
-            guard let item = Items(name: itemNameText.text!, desc: descText.text!,price:priceText.text!)
+            guard let item = Items(name: itemNameText.text!, desc: descText.text!,price:priceText.text!,category: categoryText.text!)
                 else {
                     fatalError("Unable to instantiate Item")
             }

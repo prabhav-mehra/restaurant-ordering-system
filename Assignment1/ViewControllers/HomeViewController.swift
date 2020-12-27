@@ -17,8 +17,9 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     var floatingButton: UIButton?
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
-  
+    var itemArray = [String]()
     var qrCode = String()
+    let db = Firestore.firestore()
     
     private enum ConstantsButton {
         static let trailingValue: CGFloat = 15.0
@@ -30,6 +31,29 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        db.collection("items").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let myData =  document.data()
+                    let name = myData["name"]
+                    let desc = myData["desc"]
+                    let price = myData["price"]
+                    let uid = myData["uid"]
+                    let category = myData["category"]
+                    if((uid as! String) == uid as! String) {
+                        guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
+                            else {
+                                fatalError("Unable to instantiate Item")
+                        }
+                        self.itemArray.append(item.category)
+
+                    }
+                }
+            }
+        }
+        print(self.itemArray)
         createFloatingButton()
         
         captureSession = AVCaptureSession()
@@ -63,18 +87,13 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                 ConstantsButton.buttonHeight).isActive = true
         }
     }
-//
-//    @IBAction private func doThisWhenButtonIsTapped(_ sender: Any) {
-//
-//        print("Tapped")
-//
-//    }
+
 
     @IBAction func changeToDetail(_ sender: Any) {
-        
-        self.show(DetailViewController(), sender: self)
+
+//        print(self.itemArray)
+        self.show(DetailViewController(mealSections: self.itemArray), sender: self)
  
-    
     }
     
     func failed() {
@@ -101,6 +120,7 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         func found(code: String) {
             print(code)
             qrCode = code
+            
             self.captureSession?.stopRunning()
             previewLayer?.isHidden = true
             previewLayer.removeFromSuperlayer()
@@ -110,6 +130,12 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             view.window?.rootViewController = menuView
             view.window?.makeKeyAndVisible()
         }
+    
+    func myArrayFunc(inputArray:Array<String>) -> Array<String> {
+               
+               
+        return self.itemArray
+    }
 
         override var prefersStatusBarHidden: Bool {
             return true
@@ -122,7 +148,7 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     @IBAction func doThisWhenButtonIsTapped(_ sender: Any) {
        view.backgroundColor = UIColor.black
        captureSession = AVCaptureSession()
-
+    
        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
        let videoInput: AVCaptureDeviceInput
 
