@@ -107,7 +107,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="t3T-UF-2g8">
-                                <rect key="frame" x="40" y="128" width="334" height="404.5"/>
+                                <rect key="frame" x="40" y="128" width="334" height="584.5"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CfC-Rw-K2A">
                                         <rect key="frame" x="0.0" y="0.0" width="334" height="40"/>
@@ -132,31 +132,77 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TLC-Lb-h2E">
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TLC-Lb-h2E">
                                         <rect key="frame" x="0.0" y="240" width="334" height="22"/>
-                                        <state key="normal" image="unchecked"/>
+                                        <state key="normal" image="unchecked">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="Resturant">
+                                                    <attributes>
+                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <font key="NSFont" metaFont="system" size="17"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </state>
                                         <state key="selected" image="checked"/>
                                         <connections>
                                             <action selector="optionButtonSlelected:" destination="bnB-ZS-Irm" eventType="touchUpInside" id="om0-4G-TB1"/>
+                                            <action selector="resturantRadioTapped:" destination="bnB-ZS-Irm" eventType="touchUpInside" id="nVM-OR-hrD"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5vP-Zx-74H">
-                                        <rect key="frame" x="0.0" y="282" width="334" height="22"/>
-                                        <state key="normal" image="unchecked"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Resturant Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xix-qF-WsA">
+                                        <rect key="frame" x="0.0" y="282" width="334" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Ff1-Ac-PA9"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Resturant Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ioh-fl-J9I">
+                                        <rect key="frame" x="0.0" y="342" width="334" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="N9J-hM-yfv"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contact Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sio-EH-Eb1">
+                                        <rect key="frame" x="0.0" y="402" width="334" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="tAF-fI-dAg"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5vP-Zx-74H">
+                                        <rect key="frame" x="0.0" y="462" width="334" height="22"/>
+                                        <state key="normal" image="unchecked">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="Customer">
+                                                    <attributes>
+                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <font key="NSFont" metaFont="system" size="17"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </state>
                                         <state key="selected" image="checked"/>
                                         <connections>
+                                            <action selector="customerRadioTapped:" destination="bnB-ZS-Irm" eventType="touchUpInside" id="L8W-SD-gtX"/>
                                             <action selector="optionButtonSlelected:" destination="bnB-ZS-Irm" eventType="touchUpInside" id="6nR-gm-r6e"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kr8-gd-1qJ">
-                                        <rect key="frame" x="0.0" y="324" width="334" height="40"/>
+                                        <rect key="frame" x="0.0" y="504" width="334" height="40"/>
                                         <state key="normal" title="Sign Up"/>
                                         <connections>
                                             <action selector="SignUpTapped:" destination="bnB-ZS-Irm" eventType="touchUpInside" id="KMC-zR-UaQ"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23O-hV-fH0">
-                                        <rect key="frame" x="0.0" y="384" width="334" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="564" width="334" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.21608214529568393" blue="0.077398507441908793" alpha="0.84705882352941175" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
@@ -185,6 +231,9 @@
                         <outlet property="LastNameText" destination="QdR-A9-Zcb" id="n2f-EN-lkQ"/>
                         <outlet property="PasswordText" destination="CuU-2Z-Yic" id="LfP-Ns-ha3"/>
                         <outlet property="SignUpButton" destination="kr8-gd-1qJ" id="mbk-Az-dan"/>
+                        <outlet property="resturantAddressText" destination="Ioh-fl-J9I" id="Z7e-9c-EuV"/>
+                        <outlet property="resturantContactText" destination="Sio-EH-Eb1" id="MpV-JY-ZMn"/>
+                        <outlet property="resturantNameText" destination="xix-qF-WsA" id="wpN-3g-xUf"/>
                         <outlet property="resturantRadio" destination="TLC-Lb-h2E" id="Jnc-RQ-24n"/>
                         <outlet property="userRadio" destination="5vP-Zx-74H" id="hAP-tT-MIH"/>
                     </connections>
@@ -384,6 +433,9 @@
                                     <constraint firstAttribute="width" constant="73" id="P13-Az-gX0"/>
                                 </constraints>
                                 <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logoutTapped:" destination="lW5-M2-GCG" eventType="touchUpInside" id="SQg-eb-D8x"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Category" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="To9-Mk-3ve">
                                 <rect key="frame" x="20" y="443" width="374" height="28.5"/>

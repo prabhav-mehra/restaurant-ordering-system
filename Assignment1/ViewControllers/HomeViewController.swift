@@ -20,6 +20,7 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     var itemArray = [String]()
     var qrCode = String()
     let db = Firestore.firestore()
+    var menuItems = [Meal]()
     
     private enum ConstantsButton {
         static let trailingValue: CGFloat = 15.0
@@ -43,17 +44,46 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                     let uid = myData["uid"]
                     let category = myData["category"]
                     if((uid as! String) == uid as! String) {
-                        guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
-                            else {
-                                fatalError("Unable to instantiate Item")
+                        if !self.itemArray.contains(category as! String){
+                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
+                                else {
+                                    fatalError("Unable to instantiate Item")
+                            }
+                            self.itemArray.append(item.category)
                         }
-                        self.itemArray.append(item.category)
 
                     }
                 }
             }
         }
-        print(self.itemArray)
+      
+        db.collection("items").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let myData =  document.data()
+                    let name = myData["name"]
+                    let desc = myData["desc"]
+                    let price = myData["price"]
+                    let uid = myData["uid"]
+                    let category = myData["category"]
+                    if((uid as! String) == uid as! String) {
+                        let priceFloat = (price as! NSString).floatValue
+                       
+                            let item =  Meal(name: name as! String, description: desc as! String, type: category as! String, price: priceFloat)
+                             
+                            self.menuItems.append(item)
+                        
+
+                    }
+                }
+            }
+        }
+        
+        
+        
+        
         createFloatingButton()
         
         captureSession = AVCaptureSession()
@@ -92,7 +122,7 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     @IBAction func changeToDetail(_ sender: Any) {
 
 //        print(self.itemArray)
-        self.show(DetailViewController(mealSections: self.itemArray), sender: self)
+        self.show(DetailViewController(mealSections: self.itemArray, meals: self.menuItems), sender: self)
  
     }
     

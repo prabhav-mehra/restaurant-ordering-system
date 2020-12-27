@@ -14,8 +14,12 @@ import DLRadioButton
 
 class SignUpViewController: UIViewController {
     
+    @IBOutlet weak var resturantContactText: UITextField!
     
-
+    @IBOutlet weak var resturantAddressText: UITextField!
+    
+    @IBOutlet weak var resturantNameText: UITextField!
+    
     @IBOutlet weak var FirstNameText: UITextField!
    
     @IBOutlet weak var LastNameText: UITextField!
@@ -33,7 +37,14 @@ class SignUpViewController: UIViewController {
     var radioResult = " "
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        resturantRadio.semanticContentAttribute = UIApplication.shared
+            .userInterfaceLayoutDirection == .leftToRight ? .forceLeftToRight : .forceRightToLeft
+        userRadio.semanticContentAttribute = UIApplication.shared
+            .userInterfaceLayoutDirection == .leftToRight ? .forceLeftToRight : .forceRightToLeft
+        
+//        resturantRadio.addTarget(self, action: "pressed:", forControlEvents: .TouchUpInside)
+//        userRadio.addTarget(self, action: "pressed:", forControlEvents: .TouchUpInside)
+       
         setUpElements()
         // Do any additional setup after loading the view.
     }
@@ -75,6 +86,12 @@ class SignUpViewController: UIViewController {
         Utilities.styleTextField(EmailText)
         Utilities.styleTextField(PasswordText)
         Utilities.styleFilledButton(SignUpButton)
+        Utilities.styleTextField(resturantNameText)
+        Utilities.styleTextField(resturantContactText)
+        Utilities.styleTextField(resturantAddressText)
+        resturantNameText.isHidden = true
+        resturantContactText.isHidden = true
+        resturantAddressText.isHidden = true
     }
     
     func validateFields() -> String? {
@@ -90,6 +107,16 @@ class SignUpViewController: UIViewController {
         if Utilities.isPasswordValid(cleanedPassword) == false{
             return "Please Make sure your password contains at least 8 characters, contains a special character and atleast one number."
         }
+        
+        if  resturantRadio.isSelected == true {
+            if resturantNameText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+                resturantContactText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+                resturantAddressText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+                
+                return "Please fill in all fields"
+            }
+        }
+       
         
         return nil
     }
@@ -108,11 +135,15 @@ class SignUpViewController: UIViewController {
             let lastName = LastNameText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let email = EmailText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let pass = PasswordText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-            Auth.auth().createUser(withEmail: email, password: pass) { (result, err) in
+            let resturantName = resturantNameText.text!
+            let resturantAddress = resturantAddressText.text!
+            let resturantContact = resturantContactText.text!
+        
+            Auth.auth().createUser(withEmail: email, password: pass) { [self] (result, err) in
                 
                 
                 if err != nil {
+                    print(err!)
                     
                     self.showError("Error Creating User!")
                 }
@@ -120,13 +151,25 @@ class SignUpViewController: UIViewController {
                 else {
                     
                     let db = Firestore.firestore()
+                    if self.userRadio.isSelected == true{
+                        
+                        db.collection("users").addDocument(data: ["firstname":firstName,"lastname":lastName,"uid":result!.user.uid,"email":email,"option":self.radioResult]) { (error) in
 
-                    db.collection("users").addDocument(data: ["firstname":firstName,"lastname":lastName,"uid":result!.user.uid,"email":email,"option":self.radioResult,"image":""]) { (error) in
+                            if error != nil {
+                                self.showError("Error saving user data!")
+                            }
 
-                        if error != nil {
-                            self.showError("Error saving user data!")
                         }
+                    }
+                    else {
+                        db.collection("users").addDocument(data: ["firstname":firstName,"lastname":lastName,"uid":result!.user.uid,"email":email,"option":self.radioResult,"image":"","resturantName":resturantName,"resturantContact":resturantContact,"resturantAddress":resturantAddress]) { (error) in
 
+                            if error != nil {
+                                self.showError("Error saving user data!")
+                            }
+
+                        }
+                        
                     }
 
                     self.transitionToHome()
@@ -170,6 +213,21 @@ class SignUpViewController: UIViewController {
         
         view.window?.rootViewController = homeViewController
         view.window?.makeKeyAndVisible()
+        
+    }
+    
+    @IBAction func resturantRadioTapped(_ sender: Any) {
+   
+        resturantNameText.isHidden = false
+        resturantContactText.isHidden = false
+        resturantAddressText.isHidden = false
+    }
+    
+    
+    @IBAction func customerRadioTapped(_ sender: Any) {
+        resturantNameText.isHidden = true
+        resturantContactText.isHidden = true
+        resturantAddressText.isHidden = true
         
     }
     

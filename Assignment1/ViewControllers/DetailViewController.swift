@@ -42,15 +42,16 @@ class DetailViewController: UIViewController {
     var yContraint: NSLayoutConstraint?
     var lContraint: NSLayoutConstraint?
     var rContraint: NSLayoutConstraint?
-    var meals = Meal.loadDemoMeals()
+    var meals = [Meal]()
 //    var mealSections: [String] = Meal.loadMealSections()
     var mealSections = [String]()
   
     let db = Firestore.firestore()
     let testvC = HomeViewController()
     
-    init(mealSections: [String]) {
+    init(mealSections: [String],meals: [Meal]) {
         self.mealSections = mealSections
+        self.meals = meals
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -211,7 +212,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
                 return menuCell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCollectionViewCell
-                let rows = Meal.loadMealsForSection(sectionName: self.mealSections[(indexPath.section-1)], meals: meals)
+                let rows = Meal.loadMealsForSection(sectionName: self.mealSections[(indexPath.section-1)], meals: self.meals)
                 cell.meal = rows[indexPath.row]
                 return cell
             }
