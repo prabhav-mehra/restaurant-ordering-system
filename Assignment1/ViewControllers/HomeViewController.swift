@@ -32,55 +32,10 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        db.collection("items").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let myData =  document.data()
-                    let name = myData["name"]
-                    let desc = myData["desc"]
-                    let price = myData["price"]
-                    let uid = myData["uid"]
-                    let category = myData["category"]
-                    if((uid as! String) == uid as! String) {
-                        if !self.itemArray.contains(category as! String){
-                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
-                                else {
-                                    fatalError("Unable to instantiate Item")
-                            }
-                            self.itemArray.append(item.category)
-                        }
 
-                    }
-                }
-            }
-        }
-      
-        db.collection("items").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let myData =  document.data()
-                    let name = myData["name"]
-                    let desc = myData["desc"]
-                    let price = myData["price"]
-                    let uid = myData["uid"]
-                    let category = myData["category"]
-                    if((uid as! String) == uid as! String) {
-                        let priceFloat = (price as! NSString).floatValue
-                       
-                            let item =  Meal(name: name as! String, description: desc as! String, type: category as! String, price: priceFloat)
-                             
-                            self.menuItems.append(item)
-                        
+        NotificationCenter.default.addObserver(self, selector: Selector(("OnAppBecameActive")), name: UIApplication.didBecomeActiveNotification, object: nil)
 
-                    }
-                }
-            }
-        }
-        
+//           refreshView()
         
         
         
@@ -91,6 +46,59 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
       
 
         // Do any additional setup after loading the view.
+    }
+    func refreshView()
+    {
+        db.collection("items").getDocuments() { [self] (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            let myData =  document.data()
+                            let name = myData["name"]
+                            let desc = myData["desc"]
+                            let price = myData["price"]
+                            let uid = myData["uid"]
+                            let category = myData["category"]
+                            if((uid as! String) == self.qrCode) {
+                                if !self.itemArray.contains(category as! String){
+                                    guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
+                                        else {
+                                            fatalError("Unable to instantiate Item")
+                                    }
+                                   print(item.category)
+                                   itemArray.append(item.category)
+                                }
+    
+                            }
+                        }
+                    }
+                }
+        
+                    db.collection("items").getDocuments() { (querySnapshot, err) in
+                        if let err = err {
+                            print("Error getting documents: \(err)")
+                        } else {
+                            for document in querySnapshot!.documents {
+                                let myData =  document.data()
+                                let name = myData["name"]
+                                let desc = myData["desc"]
+                                let price = myData["price"]
+                                let uid = myData["uid"]
+                                let category = myData["category"]
+                                if((uid as! String) == self.qrCode) {
+                                    let priceFloat = (price as! NSString).floatValue
+        
+                                        let item =  Meal(name: name as! String, description: desc as! String, type: category as! String, price: priceFloat)
+        
+                                    self.menuItems.append(item)
+        
+        
+                                }
+                            }
+                        }
+                    }
+
     }
     
     private func createFloatingButton() {
@@ -121,7 +129,8 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 
     @IBAction func changeToDetail(_ sender: Any) {
 
-//        print(self.itemArray)
+        print(self.itemArray)
+        refreshView()
         self.show(DetailViewController(mealSections: self.itemArray, meals: self.menuItems), sender: self)
  
     }
@@ -140,27 +149,40 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
                 guard let stringValue = readableObject.stringValue else { return }
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                          
                 found(code: stringValue)
+            
             }
+           
 
-            dismiss(animated: true)
+//            dismiss(animated: true)
 
         }
 
         func found(code: String) {
             print(code)
             qrCode = code
+            refreshView()
+//            let segueViewController = self.storyboard?.instantiateViewController(withIdentifier: "confirmScan") as? DetailViewController
+//         segueViewController.qrc = qrCode
+//                 self.navigationController?.pushViewController(segueViewController!, animated: true)
+//                 captureSession?.stopRunning()
+            print(self.itemArray)
             
+
+           
+//            self.show(DetailViewController(mealSections: itemArray, meals: self.menuItems), sender: self)
             self.captureSession?.stopRunning()
-            previewLayer?.isHidden = true
+//            previewLayer?.isHidden = true
             previewLayer.removeFromSuperlayer()
+            print(qrCode)
             
-            let menuView = storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
+           
             
-            view.window?.rootViewController = menuView
-            view.window?.makeKeyAndVisible()
+            
         }
-    
+
+//
     func myArrayFunc(inputArray:Array<String>) -> Array<String> {
                
                

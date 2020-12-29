@@ -48,6 +48,7 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    @available(iOS 13.0, *)
     @IBAction func LoginButtonTapped(_ sender: Any) {
         let email = EmailText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = PasswordText.text!.trimmingCharacters(in: .whitespacesAndNewlines)

@@ -92,6 +92,7 @@ class MealItemViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(red: 71/255, green: 162/255, blue: 25/255, alpha: 1)
         button.setTitle("Add to Cart", for: UIControl.State.normal)
+        button.addTarget(self, action: Selector(("buttonTapped")), for: .touchUpInside)
         return button
     }()
     
@@ -104,6 +105,7 @@ class MealItemViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupViews()
         setupNavBar()
     }
@@ -137,6 +139,9 @@ class MealItemViewController: UIViewController {
             shareButton.widthAnchor.constraint(equalToConstant: 50),
             shareButton.heightAnchor.constraint(equalToConstant: 50)
             ])
+        addCartButton.addTarget(self, action: #selector(doThisWhenButtonIsTapped(_:)), for: .touchUpInside)
+        
+
     }
     func setupNavBar(){
         view.addSubview(navigationBar)
@@ -147,6 +152,12 @@ class MealItemViewController: UIViewController {
             ])
         view.addSubview(statusBarView)
     }
+    
+    @IBAction func doThisWhenButtonIsTapped(_ sender: Any) {
+     
+          print("Add")
+
+      }
     
 }
 
@@ -234,20 +245,20 @@ extension MealItemViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cell = tableView.cellForRow(at: indexPath) as! MealItemTableViewCell
-        cell.isSelected = true
-        // define sections that are single select
-        let singleSelectSections = [2, 4]
-        if (singleSelectSections.contains(indexPath.section)) {
-            print("selected section: \(indexPath.section) and row: \(indexPath.row)")
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableView.ScrollPosition.none)
-            let rows = tableView.numberOfRows(inSection: indexPath.section)
-            for i in 0...rows {
-                if i != indexPath.row {
-                    tableView.deselectRow(at: IndexPath(row: i, section: indexPath.section), animated: false)
-                }
-            }
-        }
+//        let cell = tableView.cellForRow(at: indexPath) as! MealItemTableViewCell
+//        cell.isSelected = true
+//        // define sections that are single select
+//        let singleSelectSections = [2, 4]
+//        if (singleSelectSections.contains(indexPath.section)) {
+//            print("selected section: \(indexPath.section) and row: \(indexPath.row)")
+//            tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableView.ScrollPosition.none)
+//            let rows = tableView.numberOfRows(inSection: indexPath.section)
+//            for i in 0...rows {
+//                if i != indexPath.row {
+//                    tableView.deselectRow(at: IndexPath(row: i, section: indexPath.section), animated: false)
+//                }
+//            }
+//        }
         
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

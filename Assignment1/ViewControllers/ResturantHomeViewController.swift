@@ -12,11 +12,19 @@ import Firebase
 import FirebaseFirestore
 import os.log
 import MessageUI
+import SwiftUI
+import PopMenu
 
-class ResturantHomeViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, UITextFieldDelegate {
+
+
+class ResturantHomeViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, UITextFieldDelegate, PopMenuViewControllerDelegate {
   
     
     var floatingButton: UIButton?
+    
+   
+    
+   
     
     
     let user = Auth.auth().currentUser
@@ -116,9 +124,19 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
             }
             
         }
+presentMenu()
         
+     
+    
          self.itemTableView.reloadData()
         // Do any additional setup after loading the view.
+    }
+    
+    func presentMenu() {
+        let menuViewController = PopMenuViewController(actions: [
+            PopMenuDefaultAction(title: "Action Title 1", image: UIImage(named: "icon"))])
+
+        present(menuViewController, animated: true, completion: nil)
     }
 
     
@@ -172,13 +190,16 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
                  mail.setMessageBody("Message body", isHTML: false)
             let imageData: NSData = imageView.image!.pngData()! as NSData
             mail.addAttachmentData(imageData as Data, mimeType: "image/png", fileName: "imageName.png")
+            print("sent2")
             self.present(mail, animated: true, completion: nil)
+       
         } else {
             // show failure alert
         }
     }
    
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+      
         controller.dismiss(animated: true)
     }
     
@@ -384,4 +405,125 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         return true
     }
     
+    func popMenuScrollable() -> PopMenuViewController {
+           let actions = [
+               PopMenuDefaultAction(title: "Save to List", image: nil, color: #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)),
+               PopMenuDefaultAction(title: "Favorite", image: nil, color: #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
+               PopMenuDefaultAction(title: "Add to Cart", image: nil, color: #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)),
+               PopMenuDefaultAction(title: "Save to List", image: nil, color: #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)),
+               PopMenuDefaultAction(title: "Favorite", image: nil, color: #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
+               PopMenuDefaultAction(title: "Add to Cart", image: nil, color: #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)),
+               PopMenuDefaultAction(title: "Save to List", image: nil, color: #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)),
+               PopMenuDefaultAction(title: "Favorite", image: nil, color: #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
+               PopMenuDefaultAction(title: "Add to Cart", image: nil, color: #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)),
+               PopMenuDefaultAction(title: "Save to List", image: nil, color: #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)),
+               PopMenuDefaultAction(title: "Favorite", image: nil, color: #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
+               PopMenuDefaultAction(title: "Add to Cart", image: nil, color: #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)),
+               PopMenuDefaultAction(title: "Last Action", image: nil, color: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))
+           ]
+           
+           let popMenu = PopMenuViewController(actions: actions)
+           
+           return popMenu
+    }
+    
+  
+    @IBAction func popUp(_ sender: Any) {
+    
+//        let manager = PopMenuManager.default
+//        // Set actions
+//        manager.actions = [
+//            PopMenuDefaultAction(title: "Click me to", image: nil, color: .yellow),
+//            PopMenuDefaultAction(title: "Pop another menu", image: nil, color: #colorLiteral(red: 0.9816910625, green: 0.5655395389, blue: 0.4352460504, alpha: 1)),
+//            PopMenuDefaultAction(title: "Try it out!", image: nil, color: .white)
+//        ]
+//
+//        // Customize appearance
+//        manager.present(on: self)
+        let manager = PopMenuManager.default
+        // Set actions
+        manager.actions = [
+            PopMenuDefaultAction(title: "Sign Out", image:nil, color: .yellow),
+            PopMenuDefaultAction(title: "Help", image: nil, color: #colorLiteral(red: 0.9816910625, green: 0.5655395389, blue: 0.4352460504, alpha: 1)),
+            PopMenuDefaultAction(title: "Profile", image: nil, color: .white)
+        ]
+        // Customize appearance
+        manager.popMenuAppearance.popMenuFont = UIFont(name: "AvenirNext-DemiBold", size: 16)!
+        manager.popMenuAppearance.popMenuBackgroundStyle = .blurred(.dark)
+        manager.popMenuShouldDismissOnSelection = false
+        manager.popMenuDelegate = self
+       
+           
+    
+        manager.present(sourceView: self)
+    }
+    
+    fileprivate func showMenuWithManager(for barButtonItem: UIBarButtonItem) {
+            // Get manager instance
+            let manager = PopMenuManager.default
+            // Set actions
+            manager.actions = [
+                PopMenuDefaultAction(title: "Sign Out", image: #imageLiteral(resourceName: "Plus"), color: .yellow),
+                PopMenuDefaultAction(title: "Pop another menu", image: #imageLiteral(resourceName: "Heart"), color: #colorLiteral(red: 0.9816910625, green: 0.5655395389, blue: 0.4352460504, alpha: 1)),
+                PopMenuDefaultAction(title: "Try it out!", image: nil, color: .white)
+            ]
+            // Customize appearance
+          
+
+            manager.popMenuAppearance.popMenuFont = UIFont(name: "AvenirNext-DemiBold", size: 16)!
+            manager.popMenuAppearance.popMenuBackgroundStyle = .blurred(.dark)
+            manager.popMenuShouldDismissOnSelection = false
+            manager.popMenuDelegate = self
+         
+        
+//            print(manager.index(ofAccessibilityElement: 1))
+              
+            // Present menu
+            manager.present(sourceView: barButtonItem)
+        
+        }
+    
+//    func ff()
+//
+//    }
+//    func popMenuDidSelectItem(_ popMenuViewController: PopMenuViewController, at index: Int) {
+//           // Use manager for pop menu
+//           let manager = PopMenuManager.default
+//           // Configure actions
+//           manager.actions = [
+//               PopMenuDefaultAction(title: "Save to List", image: nil),
+//               PopMenuDefaultAction(title: "Favorite", image: nil),
+//               PopMenuDefaultAction(title: "Add to Cart", image: nil),
+//               PopMenuDefaultAction(title: "Download", image: nil)
+//           ]
+//           // Present another PopMenu on an active PopMenu
+//           manager.present(sourceView: popMenuViewController.actions[index].view,on: popMenuViewController)
+//       }
+//
+    
+
 }
+
+extension ResturantHomeViewController {
+
+    func popMenuDidSelectItem(_ popMenuViewController: PopMenuViewController, at index: Int) {
+        if index == 0 {
+            let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+                print("signed out")
+                transitionToLogin()
+            } catch let signOutError as NSError {
+                print ("Error signing out: %@", signOutError)
+            }
+            
+        }
+       
+    }
+
+}
+
+
+
+
+

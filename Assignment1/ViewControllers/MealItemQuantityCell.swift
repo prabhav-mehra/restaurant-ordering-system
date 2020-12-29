@@ -67,5 +67,11 @@ class MealItemQuantityCell: UITableViewCell {
             decreaseButton.heightAnchor.constraint(equalToConstant: 40)
             ])
     }
+    
+    func increase(){
+        if increaseButton.isSelected {
+            quantityLabel.text = "2"
+        }
+    }
 }
 

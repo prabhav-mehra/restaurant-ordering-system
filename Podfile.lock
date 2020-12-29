@@ -336,6 +336,7 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
+  - NewPopMenu (2.1.2)
   - PromisesObjC (1.2.9)
 
 DEPENDENCIES:
@@ -345,6 +346,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Firestore
+  - NewPopMenu
 
 SPEC REPOS:
   trunk:
@@ -367,6 +369,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
+    - NewPopMenu
     - PromisesObjC
 
 SPEC CHECKSUMS:
@@ -389,8 +392,9 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
+  NewPopMenu: c6129e08e8192f6257ceb5f9a4357e1b59c6e2e7
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
 
-PODFILE CHECKSUM: 5799b90ef3515a265e18d4f2050617330dbfa986
+PODFILE CHECKSUM: 80adb1664bfc6739810d0c033f9f256ad9531e7d
 
 COCOAPODS: 1.9.3
