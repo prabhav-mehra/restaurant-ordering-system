@@ -15,7 +15,9 @@ import FirebaseDatabase
 class LoginViewController: UIViewController {
     
     var ref: DatabaseReference!
-    var db: Firestore!
+    let db = Firestore.firestore()
+    var name =  " "
+    let user = Auth.auth().currentUser
     
 
     @IBOutlet weak var EmailText: UITextField!
@@ -48,7 +50,7 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    @available(iOS 13.0, *)
+    
     @IBAction func LoginButtonTapped(_ sender: Any) {
         let email = EmailText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = PasswordText.text!.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -64,11 +66,15 @@ class LoginViewController: UIViewController {
                 
                 let homeViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
                  let resturantViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.resturantViewController) as? ResturantHomeViewController
-                
-//                self.view.window?.rootViewController = homeViewController
-//                self.view.window?.makeKeyAndVisible()
+               
+              
+                self.getItems { ([Items]) in
+                    print([Items].self)
+                }
                 self.getName{ (name) in
                     if(name == "resturant"){
+                        print(name)
+                       
                         self.view.window?.rootViewController = resturantViewController
                         self.view.window?.makeKeyAndVisible()
                     }
@@ -76,7 +82,7 @@ class LoginViewController: UIViewController {
                         self.view.window?.rootViewController = homeViewController
                         self.view.window?.makeKeyAndVisible()
                     }
-                    print(name)
+                   
                 }
 
             }
@@ -90,8 +96,8 @@ class LoginViewController: UIViewController {
         
     
         func getName(Completion: @escaping((String) -> ())) {
+           
             let user = Auth.auth().currentUser
-            
             let collectionRefernce:CollectionReference!
             let db = Firestore.firestore()
             collectionRefernce = db.collection("users")
@@ -102,16 +108,54 @@ class LoginViewController: UIViewController {
                     guard let snapshot = querySnapshot else { return }
                     for document in snapshot.documents {
                         let myData = document.data()
-                        let uid = myData["uid"] as? String ?? "No Name Found"
-                        if user!.uid == uid {
+                        let uid = myData["uid"]
+                        if user!.uid == (uid as! String) {
                             let option = myData["option"] as? String ?? "No Name Found"
                             Completion(option)
+                            self.name = option
                         }
                         
                     }
                 }
             }
         }
+    
+    func getItems(Completion: @escaping(([Items]) -> ())) {
+        var toDoItems = [Items]()
+        db.collection("items").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let myData =  document.data()
+                    let name = myData["name"]
+                    let desc = myData["desc"]
+                    let price = myData["price"]
+                    let uid = myData["uid"]
+
+                    let category = myData["category"]
+                    if((name as! String) == self.name) {
+                        guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
+                            else {
+                                fatalError("Unable to instantiate Item")
+                        }
+                        print("here")
+                        toDoItems.append(item)
+
+//                        self.loadedItems.append(item)
+                    }
+                }
+            }
+
+        }
+        Completion(toDoItems)
+        print(toDoItems)
+   
+    }
+    
+    
+    
+
             
 
     

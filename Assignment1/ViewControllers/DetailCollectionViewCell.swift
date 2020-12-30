@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class DetailCollectionViewCell: UICollectionViewCell {
     
     var meal: Meal? {
@@ -42,6 +43,10 @@ class DetailCollectionViewCell: UICollectionViewCell {
         label.text = "$11.00"
         return label
     }()
+    
+  
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)

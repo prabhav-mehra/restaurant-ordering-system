@@ -11,6 +11,7 @@ target 'Assignment1' do
   pod 'DLRadioButton', '~> 1.4'
   pod 'Firebase/Database'
  pod 'NewPopMenu'
+pod 'Firebase/Storage'
 
 
   # Pods for Assignment1

@@ -11,6 +11,7 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import FirebaseFirestore
+import FirebaseStorage
 
 class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
    
@@ -21,6 +22,7 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     var qrCode = String()
     let db = Firestore.firestore()
     var menuItems = [Meal]()
+    var codeFound = Bool()
     
     private enum ConstantsButton {
         static let trailingValue: CGFloat = 15.0
@@ -126,14 +128,6 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         }
     }
 
-
-    @IBAction func changeToDetail(_ sender: Any) {
-
-        print(self.itemArray)
-        refreshView()
-        self.show(DetailViewController(mealSections: self.itemArray, meals: self.menuItems), sender: self)
- 
-    }
     
     func failed() {
             let ac = UIAlertController(title: "Scanning not supported", message: "Your device does not support scanning a code from an item. Please use a device with a camera.", preferredStyle: .alert)
@@ -149,8 +143,9 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
                 guard let stringValue = readableObject.stringValue else { return }
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                          
+                self.codeFound = true
                 found(code: stringValue)
+                
             
             }
            
@@ -162,12 +157,19 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         func found(code: String) {
             print(code)
             qrCode = code
+            if self.codeFound == true{
+                let alert = UIAlertController(title: title, message: "Foud", preferredStyle: UIAlertController.Style.alert)
+                   alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {(action:UIAlertAction!) in
+                    self.refreshView()
+                    self.show(DetailViewController(mealSections: self.itemArray, meals: self.menuItems), sender: self)
+                   }))
+                   alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
+                   self.present(alert, animated: true, completion: nil)
+            }
+            
             refreshView()
-//            let segueViewController = self.storyboard?.instantiateViewController(withIdentifier: "confirmScan") as? DetailViewController
-//         segueViewController.qrc = qrCode
-//                 self.navigationController?.pushViewController(segueViewController!, animated: true)
-//                 captureSession?.stopRunning()
-            print(self.itemArray)
+
+//            print(self.itemArray)
             
 
            
@@ -175,6 +177,7 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             self.captureSession?.stopRunning()
 //            previewLayer?.isHidden = true
             previewLayer.removeFromSuperlayer()
+//            self.dismiss(animated: false, completion: nil)
             print(qrCode)
             
            
@@ -236,6 +239,29 @@ class HomeViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 
        captureSession.startRunning()
    }
+//    private var imageURL = URL(string: "")
+//    
+//    func loadImageFromFirebase(filePath: String, name: String) {
+//        let user = Auth.auth().currentUser
+//             let storageRef = Storage.storage().reference(withPath: filePath).child("\(user!.uid)").child("\(name).png")
+//              storageRef.downloadURL { (url, error) in
+//                     if error != nil {
+//                         print((error?.localizedDescription)!)
+//                         return
+//              }
+//                    self.imageURL = url!
+//                print(self.imageURL!)
+//                Storage.storage().reference(withPath: filePath).child("\(user!.uid)").child("\(name).png").getData(maxSize: 1 * 1024 * 1024) { data, error in
+//                    if let error = error {
+//                      // Uh-oh, an error occurred!
+//                    } else {
+//                      // Data for "images/island.jpg" is returned
+//                        let image = UIImage(data: data!)
+//                    }
+//                }
+//             
+//        }
+//    }
     
     
 

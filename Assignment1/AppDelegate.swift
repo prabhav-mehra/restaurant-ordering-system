@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import FirebaseCore
 
 
 @UIApplicationMain
@@ -23,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+//    override init() { //初期化メソッドを追記
+//            FirebaseApp.configure()
+//    }
+
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

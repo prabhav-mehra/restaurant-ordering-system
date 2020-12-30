@@ -96,32 +96,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let fav = [String]()
-//        mealSections = testvC.myArrayFunc(inputArray: fav)
-//        print(mealSections)
-        
-//        db.collection("items").getDocuments() { (querySnapshot, err) in
-//            if let err = err {
-//                print("Error getting documents: \(err)")
-//            } else {
-//                for document in querySnapshot!.documents {
-//                    let myData =  document.data()
-//                    let name = myData["name"]
-//                    let desc = myData["desc"]
-//                    let price = myData["price"]
-//                    let uid = myData["uid"]
-//                    let category = myData["category"]
-//                    if((uid as! String) == uid as! String) {
-//                        guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
-//                            else {
-//                                fatalError("Unable to instantiate Item")
-//                        }
-//                        self.mealSections.append(item.category)
-//
-//                    }
-//                }
-//            }
-//        }
+
         print(self.mealSections)
       
         setupViews()
@@ -169,8 +144,15 @@ class DetailViewController: UIViewController {
             sectionTitleIndexCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             sectionTitleIndexCollectionView.heightAnchor.constraint(equalToConstant: 40)
             ])
+        backButton.addTarget(self, action: #selector(doThisWhenButtonIsTapped(_:)), for: .touchUpInside)
+    }
+    
+    @IBAction func doThisWhenButtonIsTapped(_ sender: Any) {
+        print("here")
+
     }
 }
+
 
 extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     

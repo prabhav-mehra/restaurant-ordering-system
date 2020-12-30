@@ -14,6 +14,8 @@ import os.log
 import MessageUI
 import SwiftUI
 import PopMenu
+import FirebaseStorage
+
 
 
 
@@ -68,7 +70,6 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
     
     var refreshControl = UIRefreshControl()
     
-    var docId = ""
     
     
     private enum ConstantsButton {
@@ -98,37 +99,43 @@ class ResturantHomeViewController: UIViewController, UINavigationControllerDeleg
         itemTableView.estimatedRowHeight = 44.0
         itemTableView.rowHeight = UITableView.automaticDimension
         createFloatingButton()
-        if(addedItems.count == 0) {
-            print("none")
-            db.collection("items").getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        let myData =  document.data()
-                        let name = myData["name"]
-                        let desc = myData["desc"]
-                        let price = myData["price"]
-                        let uid = myData["uid"]
-                        let category = myData["category"]
-                        if((uid as! String) == self.user?.uid) {
-                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
-                                else {
-                                    fatalError("Unable to instantiate Item")
-                            }
-                            self.toDoItems.append(item)
-                            self.loadedItems.append(item)
-                        }
-                    }
-                }
-            }
-            
-        }
-presentMenu()
+//        print(self.user?.uid)
+//        if(addedItems.count == 0) {
+//            print("none")
+//            db.collection("items").getDocuments() { (querySnapshot, err) in
+//
+//                if let err = err {
+//                    print("Error getting documents: \(err)")
+//                } else {
+//
+//                    for document in querySnapshot!.documents {
+//                        let myData =  document.data()
+//                        let name = myData["name"]
+//                        let desc = myData["desc"]
+//                        let price = myData["price"]
+//                        let uid = myData["uid"]
+//                        let category = myData["category"]
+//                        if((uid as! String) == self.user?.uid) {
+//                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
+//                                else {
+//                                    fatalError("Unable to instantiate Item")
+//                            }
+//
+//                            self.toDoItems.append(item)
+//                            self.loadedItems.append(item)
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
+//
+//
+        presentMenu()
         
      
     
-         self.itemTableView.reloadData()
+         itemTableView.reloadData()
         // Do any additional setup after loading the view.
     }
     
@@ -203,24 +210,35 @@ presentMenu()
         controller.dismiss(animated: true)
     }
     
+    func saveImage(image: UIImage) -> Bool {
+        guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
+            return false
+        }
+        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
+            return false
+        }
+       
+        do {
+            try data.write(to: directory.appendingPathComponent("fileName.png")!)
+            return true
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
+    }
+    
+    
+    
 
     @IBAction func saveToDatabase(_ sender: Any) {
         let user = Auth.auth().currentUser
-       
-//        if Auth.auth().currentUser != nil {
-//            db.collection("users").whereField("uid", isEqualTo: "\(user!.uid)").getDocuments { (querySnapshot, error) in
-//                   if let error = error {
-//                       print("Error getting documents: \(error)")
-//                   } else {
-//                    for document in querySnapshot!.documents {
-//
-////                           print(document.documentID)
-//                           self.docId = document.documentID
-//                        }
-//                   }
-//               }
-//           }
+        loadImageFromFirebase(filePath: "gs://foodordersystem-2991f.appspot.com", name: "test.png")
+        if imageView.image != nil{
+            uploadImagePic(image: imageView.image!, name: "test.png", filePath: "gs://foodordersystem-2991f.appspot.com")
+        }
         
+     
+
         for index in 0..<toDoItems.count {
             let element = toDoItems[index]
 
@@ -230,22 +248,6 @@ presentMenu()
                 fatalError("Unable to instantiate Item")
             }
             if !loadedItems.contains(where: { name in name.name == city.name }) && !loadedItems.contains(where: { desc in desc.desc == city.desc }){
-//                print(docId)
-                
-//                let washingtonRef = db.collection("users").document(self.docId)
-//
-//                // Set the "capital" field of the city 'DC'
-//                washingtonRef.updateData([
-//                    "image":"a"
-//                ]) { err in
-//                    if let err = err {
-//                        print("Error updating document: \(err)")
-//                    } else {
-//                        print("Document successfully updated")
-//                    }
-//                }
-
-
 
 
                 db.collection("items").addDocument(data: ["name":city.name,"desc":city.desc,"price":city.price,"uid":user!.uid,"category": city.category] ){ (error) in
@@ -286,13 +288,38 @@ presentMenu()
         itemTableView.reloadData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
-        itemTableView.reloadData()
+        if(addedItems.count == 0) {
+            print("none")
+            db.collection("items").getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let myData =  document.data()
+                        let name = myData["name"]
+                        let desc = myData["desc"]
+                        let price = myData["price"]
+                        let uid = myData["uid"]
+                        let category = myData["category"]
+                        if((uid as! String) == self.user?.uid) {
+                            guard let item =  Items(name: name as! String, desc: desc as! String, price: price as! String, category: category as! String)
+                                else {
+                                    fatalError("Unable to instantiate Item")
+                            }
+                            print("here")
+                            self.toDoItems.append(item)
+                            self.loadedItems.append(item)
+                        }
+                    }
+                }
+            }
+            
+        }
+       
+        self.itemTableView.reloadData()
     }
-    
     
 
     
@@ -337,7 +364,7 @@ presentMenu()
         
             cell.textLabel!.numberOfLines = 0
             cell.textLabel!.lineBreakMode = .byWordWrapping
-            let item = toDoItems[indexPath.row]
+            let item = self.toDoItems[indexPath.row]
             addedItems.append(item)
             cell.textLabel?.text = item.name + "\n" + item.desc + "\n" + item.price
 
@@ -430,18 +457,9 @@ presentMenu()
   
     @IBAction func popUp(_ sender: Any) {
     
-//        let manager = PopMenuManager.default
-//        // Set actions
-//        manager.actions = [
-//            PopMenuDefaultAction(title: "Click me to", image: nil, color: .yellow),
-//            PopMenuDefaultAction(title: "Pop another menu", image: nil, color: #colorLiteral(red: 0.9816910625, green: 0.5655395389, blue: 0.4352460504, alpha: 1)),
-//            PopMenuDefaultAction(title: "Try it out!", image: nil, color: .white)
-//        ]
-//
-//        // Customize appearance
-//        manager.present(on: self)
+
         let manager = PopMenuManager.default
-        // Set actions
+     
         manager.actions = [
             PopMenuDefaultAction(title: "Sign Out", image:nil, color: .yellow),
             PopMenuDefaultAction(title: "Help", image: nil, color: #colorLiteral(red: 0.9816910625, green: 0.5655395389, blue: 0.4352460504, alpha: 1)),
@@ -458,48 +476,78 @@ presentMenu()
         manager.present(sourceView: self)
     }
     
-    fileprivate func showMenuWithManager(for barButtonItem: UIBarButtonItem) {
-            // Get manager instance
-            let manager = PopMenuManager.default
-            // Set actions
-            manager.actions = [
-                PopMenuDefaultAction(title: "Sign Out", image: #imageLiteral(resourceName: "Plus"), color: .yellow),
-                PopMenuDefaultAction(title: "Pop another menu", image: #imageLiteral(resourceName: "Heart"), color: #colorLiteral(red: 0.9816910625, green: 0.5655395389, blue: 0.4352460504, alpha: 1)),
-                PopMenuDefaultAction(title: "Try it out!", image: nil, color: .white)
-            ]
-            // Customize appearance
-          
-
-            manager.popMenuAppearance.popMenuFont = UIFont(name: "AvenirNext-DemiBold", size: 16)!
-            manager.popMenuAppearance.popMenuBackgroundStyle = .blurred(.dark)
-            manager.popMenuShouldDismissOnSelection = false
-            manager.popMenuDelegate = self
-         
-        
-//            print(manager.index(ofAccessibilityElement: 1))
-              
-            // Present menu
-            manager.present(sourceView: barButtonItem)
-        
+    func uploadImagePic(image: UIImage, name: String, filePath: String) {
+        guard let imageData: Data = image.jpegData(compressionQuality: 0.1) else {
+            return
         }
+        let user = Auth.auth().currentUser
+
+        let metaDataConfig = StorageMetadata()
+        metaDataConfig.contentType = "image/jpg"
+
+        let storageRef = Storage.storage().reference(withPath: filePath).child("\(user!.uid)").child("\(name).png")
+
+        storageRef.putData(imageData, metadata: metaDataConfig){ (metaData, error) in
+            if let error = error {
+                print(error.localizedDescription)
+
+                return
+            }
+
+            storageRef.downloadURL(completion: { (url: URL?, error: Error?) in
+                print(url!.absoluteString)
+//                self.db.collection("users").whereField("uid", isEqualTo: (user?.uid)!).getDocuments { [self] (snapshot, err) in
+//
+//                    if let err = err {
+//                        print("Error getting documents: \(err)")
+//                    } else {
+//                        for document in snapshot!.documents {
+//                            if document == document {
+//
+//                                print(document.documentID)
+//
+//                                self.db.collection("users").document(document.documentID).updateData([
+//                                    "image": url!.absoluteString
+//                                ]) { err in
+//                                    if let err = err {
+//                                        print("Error updating document: \(err)")
+//                                    } else {
+//                                        print("Document successfully updated")
+//                                    }
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                }
+            })
+        }
+        
+    }
+    private var imageURL = URL(string: "")
     
-//    func ff()
-//
-//    }
-//    func popMenuDidSelectItem(_ popMenuViewController: PopMenuViewController, at index: Int) {
-//           // Use manager for pop menu
-//           let manager = PopMenuManager.default
-//           // Configure actions
-//           manager.actions = [
-//               PopMenuDefaultAction(title: "Save to List", image: nil),
-//               PopMenuDefaultAction(title: "Favorite", image: nil),
-//               PopMenuDefaultAction(title: "Add to Cart", image: nil),
-//               PopMenuDefaultAction(title: "Download", image: nil)
-//           ]
-//           // Present another PopMenu on an active PopMenu
-//           manager.present(sourceView: popMenuViewController.actions[index].view,on: popMenuViewController)
-//       }
-//
+    func loadImageFromFirebase(filePath: String, name: String) {
+        let user = Auth.auth().currentUser
+             let storageRef = Storage.storage().reference(withPath: filePath).child("\(user!.uid)").child("\(name).png")
+              storageRef.downloadURL { (url, error) in
+                     if error != nil {
+                         print((error?.localizedDescription)!)
+                         return
+              }
+                    self.imageURL = url!
+                print(self.imageURL!)
+                Storage.storage().reference(withPath: filePath).child("\(user!.uid)").child("\(name).png").getData(maxSize: 1 * 1024 * 1024) { data, error in
+                    if let error = error {
+                      // Uh-oh, an error occurred!
+                    } else {
+                      // Data for "images/island.jpg" is returned
+                        self.imageView.image = UIImage(data: data!)
+                    }
+                }
+             
+        }
+    }
+    
     
 
 }
