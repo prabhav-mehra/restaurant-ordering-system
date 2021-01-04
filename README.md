@@ -21,10 +21,10 @@
 
 ![43378304-059d4f7e-9394-11e8-85b8-7aefb9896e65](https://user-images.githubusercontent.com/49186141/103502969-06788a00-4ea7-11eb-9acd-23108f9e7da5.gif)
 
-![Simulator Screen Shot - iPhone Xs - 2021-01-04 at 17 13 52](https://user-images.githubusercontent.com/49186141/103506254-632c7280-4eb0-11eb-9e9f-f5af5516fe4e.png=250x250)
+![Simulator Screen Shot - iPhone Xs - 2021-01-04 at 17 13 52](https://user-images.githubusercontent.com/49186141/103506254-632c7280-4eb0-11eb-9e9f-f5af5516fe4e.png =250x250)
 
-![Simulator Screen Shot - iPhone Xs - 2021-01-04 at 17 13 20](https://user-images.githubusercontent.com/49186141/103506268-6d4e7100-4eb0-11eb-94f0-0824190d3525.png=250x250)
+![Simulator Screen Shot - iPhone Xs - 2021-01-04 at 17 13 20](https://user-images.githubusercontent.com/49186141/103506268-6d4e7100-4eb0-11eb-94f0-0824190d3525.png =250x250)
 
-![Simulator Screen Shot - iPhone Xs - 2021-01-04 at 17 12 57](https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png=250x250)
+![Simulator Screen Shot - iPhone Xs - 2021-01-04 at 17 12 57](https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png =250x250)
 
 
