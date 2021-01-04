@@ -42,6 +42,8 @@ class MealItemViewController: UIViewController {
         return bar
     }()
     
+    
+    
     lazy var tableView: UITableView = {
         let tb = UITableView(frame: CGRect.zero, style: .plain)
         tb.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +58,7 @@ class MealItemViewController: UIViewController {
         tb.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         tb.allowsMultipleSelection = true
         tb.contentInsetAdjustmentBehavior = .never
-        
+
         return tb
     }()
     
@@ -92,7 +94,7 @@ class MealItemViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(red: 71/255, green: 162/255, blue: 25/255, alpha: 1)
         button.setTitle("Add to Cart", for: UIControl.State.normal)
-        button.addTarget(self, action: Selector(("buttonTapped")), for: .touchUpInside)
+       
         return button
     }()
     
@@ -103,6 +105,7 @@ class MealItemViewController: UIViewController {
     @objc func handleShare(){
         print("Sharing button pressed")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,35 +115,37 @@ class MealItemViewController: UIViewController {
     
     func setupViews() {
         view.addSubview(addCartButton)
-        NSLayoutConstraint.activate([
-            addCartButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            addCartButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
-            addCartButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
-            addCartButton.heightAnchor.constraint(equalToConstant: 40)
-            ])
-        view.addSubview(tableView)
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
-            tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
-            tableView.bottomAnchor.constraint(equalTo: addCartButton.topAnchor, constant: 0)
-            ])
-        view.addSubview(cancelButton)
-        NSLayoutConstraint.activate([
-            cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            cancelButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
-            cancelButton.widthAnchor.constraint(equalToConstant: 50),
-            cancelButton.heightAnchor.constraint(equalToConstant: 50)
-            ])
-        view.addSubview(shareButton)
-        NSLayoutConstraint.activate([
-            shareButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            shareButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
-            shareButton.widthAnchor.constraint(equalToConstant: 50),
-            shareButton.heightAnchor.constraint(equalToConstant: 50)
-            ])
-        addCartButton.addTarget(self, action: #selector(doThisWhenButtonIsTapped(_:)), for: .touchUpInside)
-        
+           NSLayoutConstraint.activate([
+               addCartButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+               addCartButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
+               addCartButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
+               addCartButton.heightAnchor.constraint(equalToConstant: 40)
+               ])
+           view.addSubview(tableView)
+           NSLayoutConstraint.activate([
+               tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+               tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+               tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+               tableView.bottomAnchor.constraint(equalTo: addCartButton.topAnchor, constant: 0)
+               ])
+           view.addSubview(cancelButton)
+           NSLayoutConstraint.activate([
+               cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+               cancelButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
+               cancelButton.widthAnchor.constraint(equalToConstant: 50),
+               cancelButton.heightAnchor.constraint(equalToConstant: 50)
+               ])
+           view.addSubview(shareButton)
+           NSLayoutConstraint.activate([
+               shareButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+               shareButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
+               shareButton.widthAnchor.constraint(equalToConstant: 50),
+               shareButton.heightAnchor.constraint(equalToConstant: 50)
+               ])
+           addCartButton.addTarget(self, action: #selector(doThisWhenButtonIsTapped(_:)), for: .touchUpInside)
+           
+           quantityButton.addTarget(self, action: #selector(quant(_:)), for: .touchUpInside)
+            
 
     }
     func setupNavBar(){
@@ -158,6 +163,12 @@ class MealItemViewController: UIViewController {
           print("Add")
 
       }
+    @IBAction func quant(_ sender: Any) {
+     
+          print("a")
+
+      }
+    
     
 }
 
@@ -173,14 +184,14 @@ extension MealItemViewController {
                 self.navigationBar.frame.origin = CGPoint(x: 0, y: UIApplication.shared.statusBarFrame.height)
             }
         }
-        
+
         if (pos < 44) {
             blackBar = false
             setNeedsStatusBarAppearanceUpdate()
             UIView.animate(withDuration: 0.4) {
                 self.statusBarView.frame.origin = CGPoint(x: 0, y: -UIApplication.shared.statusBarFrame.height-self.navigationBar.frame.height)
                 self.navigationBar.frame.origin = CGPoint(x: 0, y: -self.navigationBar.frame.height)
-                
+
             }
         }
     }
@@ -194,14 +205,16 @@ extension MealItemViewController: UITableViewDelegate, UITableViewDataSource {
         if (section == 0) || (section == 9){
             return 1
         } else {
-            return 4
+            return 2
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print(indexPath)
         if (indexPath.section == 0) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MealItemTitleCell", for: indexPath) as! MealItemTitleCell
             return cell
         } else if (indexPath.section == 9) {
+            print(indexPath)
             let cell = tableView.dequeueReusableCell(withIdentifier: "MealItemQuantityCell", for: indexPath) as! MealItemQuantityCell
             return cell
         } else {
@@ -214,7 +227,7 @@ extension MealItemViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == 0){
             return 300
@@ -222,7 +235,7 @@ extension MealItemViewController: UITableViewDelegate, UITableViewDataSource {
             return 50
         }
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
             return nil
@@ -230,45 +243,66 @@ extension MealItemViewController: UITableViewDelegate, UITableViewDataSource {
             return "someHeaderName"
         }
     }
-    
-    
-    
+
+
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if (section == 0) || (section == 9){
             return 0
         }
-        return 20
+        return 5
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        let cell = tableView.cellForRow(at: indexPath) as! MealItemTableViewCell
-//        cell.isSelected = true
-//        // define sections that are single select
-//        let singleSelectSections = [2, 4]
-//        if (singleSelectSections.contains(indexPath.section)) {
-//            print("selected section: \(indexPath.section) and row: \(indexPath.row)")
-//            tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableView.ScrollPosition.none)
-//            let rows = tableView.numberOfRows(inSection: indexPath.section)
-//            for i in 0...rows {
-//                if i != indexPath.row {
-//                    tableView.deselectRow(at: IndexPath(row: i, section: indexPath.section), animated: false)
-//                }
-//            }
-//        }
-        
+        print(indexPath)
+        if ( indexPath.section >= 9) {
+            print(indexPath)
+            let cell = tableView.cellForRow(at: indexPath) as! MealItemQuantityCell
+            cell.isSelected = true
+            // define sections that are single select
+            let singleSelectSections = [2, 4]
+            if (singleSelectSections.contains(indexPath.section)) {
+                print("selected section: \(indexPath.section) and row: \(indexPath.row)")
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableView.ScrollPosition.none)
+                let rows = tableView.numberOfRows(inSection: indexPath.section)
+                for i in 0...rows {
+                    if i != indexPath.row {
+                        tableView.deselectRow(at: IndexPath(row: i, section: indexPath.section), animated: false)
+                    }
+                }
+            }
+        }
+        else {
+            let cell = tableView.cellForRow(at: indexPath) as! MealItemTableViewCell
+            cell.isSelected = true
+            // define sections that are single select
+            let singleSelectSections = [2, 4]
+            if (singleSelectSections.contains(indexPath.section)) {
+                print("selected section: \(indexPath.section) and row: \(indexPath.row)")
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableView.ScrollPosition.none)
+                let rows = tableView.numberOfRows(inSection: indexPath.section)
+                for i in 0...rows {
+                    if i != indexPath.row {
+                        tableView.deselectRow(at: IndexPath(row: i, section: indexPath.section), animated: false)
+                    }
+                }
+            }
+        }
+
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if (indexPath.section != 0 && indexPath.section != 9) {
             let cell = tableView.cellForRow(at: indexPath) as! MealItemTableViewCell
             cell.isSelected = false
         }
+        print(indexPath)
+
     }
-    
+
     func enableSingleSelection(AtSection section: Int) {
-        
+
     }
 }

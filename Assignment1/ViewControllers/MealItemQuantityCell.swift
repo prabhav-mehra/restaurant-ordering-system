@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class MealItemQuantityCell: UITableViewCell {
-    
+
     var increaseButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +44,7 @@ class MealItemQuantityCell: UITableViewCell {
     }
     
     func setupViews(){
-        
+       
         addSubview(quantityLabel)
         NSLayoutConstraint.activate([
             quantityLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0),
@@ -53,25 +53,43 @@ class MealItemQuantityCell: UITableViewCell {
             quantityLabel.heightAnchor.constraint(equalToConstant: 40)
             ])
         addSubview(increaseButton)
-        NSLayoutConstraint.activate([
+           NSLayoutConstraint.activate([
             increaseButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0),
             increaseButton.leftAnchor.constraint(equalTo: quantityLabel.rightAnchor, constant: 0),
             increaseButton.widthAnchor.constraint(equalToConstant: 40),
             increaseButton.heightAnchor.constraint(equalToConstant: 40)
-            ])
-        addSubview(decreaseButton)
-        NSLayoutConstraint.activate([
-            decreaseButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0),
-            decreaseButton.rightAnchor.constraint(equalTo: quantityLabel.leftAnchor, constant: 0),
-            decreaseButton.widthAnchor.constraint(equalToConstant: 40),
-            decreaseButton.heightAnchor.constraint(equalToConstant: 40)
-            ])
+               ])
+//        addSubview(increaseButton)
+//        NSLayoutConstraint.activate([
+//            increaseButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0),
+//            increaseButton.leftAnchor.constraint(equalTo: quantityLabel.rightAnchor, constant: 0),
+//            increaseButton.widthAnchor.constraint(equalToConstant: 40),
+//            increaseButton.heightAnchor.constraint(equalToConstant: 40)
+//            ])
+//        addSubview(decreaseButton)
+//        NSLayoutConstraint.activate([
+//            decreaseButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0),
+//            decreaseButton.rightAnchor.constraint(equalTo: quantityLabel.leftAnchor, constant: 0),
+//            decreaseButton.widthAnchor.constraint(equalToConstant: 40),
+//            decreaseButton.heightAnchor.constraint(equalToConstant: 40)
+//            ])
+        increaseButton.addTarget(self, action: #selector(increaseQuan(_:)), for: .touchUpInside)
+        decreaseButton.addTarget(self, action: #selector(decreaseQuan(_:)), for: .touchUpInside)
     }
     
-    func increase(){
-        if increaseButton.isSelected {
-            quantityLabel.text = "2"
-        }
+    @IBAction func increaseQuan(_ sender: Any) {
+        print("here")
+        let count = quantityLabel.text
+        let countInt = Int(count!)
+        let str2 = String(countInt!+1)
+        quantityLabel.text =  str2
+    }
+    @IBAction func decreaseQuan(_ sender: Any) {
+        print("here")
+        let count = quantityLabel.text
+        let countInt = Int(count!)
+        let str2 = String(countInt!-1)
+        quantityLabel.text =  str2
     }
 }
 

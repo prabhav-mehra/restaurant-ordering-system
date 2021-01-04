@@ -21,7 +21,6 @@
 		1852785524CB364300E7D3E5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1852785424CB364300E7D3E5 /* Utilities.swift */; };
 		1852785724CB364600E7D3E5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1852785624CB364600E7D3E5 /* Constants.swift */; };
 		1852785924CB3AD100E7D3E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1852785824CB3AD100E7D3E5 /* GoogleService-Info.plist */; };
-		188821392591E4E7006B3E69 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188821382591E4E7006B3E69 /* MenuViewController.swift */; };
 		18A284B12585EFD6006C9C8C /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A284B02585EFD6006C9C8C /* TableViewCell.swift */; };
 		18D33270258485B800AC3BEE /* ResturantHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D3326F258485B800AC3BEE /* ResturantHomeViewController.swift */; };
 		18E171CD259383FC00A471A7 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E171CC259383FC00A471A7 /* DetailViewController.swift */; };
@@ -42,6 +41,7 @@
 		18E172252593895E00A471A7 /* MealItemQuantityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E172242593895E00A471A7 /* MealItemQuantityCell.swift */; };
 		18E1722A25938A4800A471A7 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1722925938A4800A471A7 /* InfoTableViewCell.swift */; };
 		18E1722F25938A6000A471A7 /* InfoTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E1722E25938A6000A471A7 /* InfoTableViewHeader.swift */; };
+		18EB5624259F72A000255ABC /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB5623259F72A000255ABC /* CartViewController.swift */; };
 		18F9E7592588EBFC00AD31CB /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9E7582588EBFB00AD31CB /* Items.swift */; };
 		259C1D7BD1934BA81D689C37 /* Pods_Assignment1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1569F400FFB3AA6A80E8CC36 /* Pods_Assignment1.framework */; };
 		FE61B130D07A9A82100123E8 /* Pods_Assignment1Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85E25535DD710258ACE3E610 /* Pods_Assignment1Tests.framework */; };
@@ -87,7 +87,6 @@
 		1852785424CB364300E7D3E5 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		1852785624CB364600E7D3E5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1852785824CB3AD100E7D3E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		188821382591E4E7006B3E69 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		18A284B02585EFD6006C9C8C /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		18D3326F258485B800AC3BEE /* ResturantHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResturantHomeViewController.swift; sourceTree = "<group>"; };
 		18E171CC259383FC00A471A7 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +107,7 @@
 		18E172242593895E00A471A7 /* MealItemQuantityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealItemQuantityCell.swift; sourceTree = "<group>"; };
 		18E1722925938A4800A471A7 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		18E1722E25938A6000A471A7 /* InfoTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewHeader.swift; sourceTree = "<group>"; };
+		18EB5623259F72A000255ABC /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		18F9E7582588EBFB00AD31CB /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		680CFAEB449844CDADEFB6A9 /* Pods-Assignment1Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assignment1Tests.release.xcconfig"; path = "Target Support Files/Pods-Assignment1Tests/Pods-Assignment1Tests.release.xcconfig"; sourceTree = "<group>"; };
 		7762C69E5853952E301B8389 /* Pods_Assignment1_Assignment1UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assignment1_Assignment1UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,7 +211,6 @@
 				1852784E24CAE12D00E7D3E5 /* HomeViewController.swift */,
 				18D3326F258485B800AC3BEE /* ResturantHomeViewController.swift */,
 				18A284B02585EFD6006C9C8C /* TableViewCell.swift */,
-				188821382591E4E7006B3E69 /* MenuViewController.swift */,
 				18E171CC259383FC00A471A7 /* DetailViewController.swift */,
 				18E171D1259384BE00A471A7 /* Interactor.swift */,
 				18E171D62593850300A471A7 /* InfoViewController.swift */,
@@ -226,9 +225,10 @@
 				18E172152593885A00A471A7 /* MealItemViewController.swift */,
 				18E1721A2593890000A471A7 /* MealItemTableViewCell.swift */,
 				18E1721F2593893300A471A7 /* MealItemTitleCell.swift */,
-				18E172242593895E00A471A7 /* MealItemQuantityCell.swift */,
 				18E1722925938A4800A471A7 /* InfoTableViewCell.swift */,
+				18E172242593895E00A471A7 /* MealItemQuantityCell.swift */,
 				18E1722E25938A6000A471A7 /* InfoTableViewHeader.swift */,
+				18EB5623259F72A000255ABC /* CartViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -533,7 +533,6 @@
 				18E171E1259385BB00A471A7 /* SectionTitleIndexCollectionView.swift in Sources */,
 				18E17207259387C000A471A7 /* MenuCollectionViewCell.swift in Sources */,
 				18E172112593881200A471A7 /* SectionHeaderView.swift in Sources */,
-				188821392591E4E7006B3E69 /* MenuViewController.swift in Sources */,
 				18E1720C259387F100A471A7 /* DetailHeaderCollectionViewCell.swift in Sources */,
 				1852784B24CAE11200E7D3E5 /* SignUpViewController.swift in Sources */,
 				18E172202593893300A471A7 /* MealItemTitleCell.swift in Sources */,
@@ -543,6 +542,7 @@
 				18F9E7592588EBFC00AD31CB /* Items.swift in Sources */,
 				18E171D72593850300A471A7 /* InfoViewController.swift in Sources */,
 				1852785724CB364600E7D3E5 /* Constants.swift in Sources */,
+				18EB5624259F72A000255ABC /* CartViewController.swift in Sources */,
 				1852781F24CAE0AE00E7D3E5 /* ViewController.swift in Sources */,
 				18E1722F25938A6000A471A7 /* InfoTableViewHeader.swift in Sources */,
 				18E171EC259385E000A471A7 /* Meal.swift in Sources */,

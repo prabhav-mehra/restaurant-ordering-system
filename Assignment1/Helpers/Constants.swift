@@ -17,6 +17,7 @@ struct Constants {
         static let loginViewController = "LoginVC"
         static let ViewController = "ViewVC"
         static let menuViewController = "MenuVC"
+        static let cartViewController = "CartVC"
        
         
         

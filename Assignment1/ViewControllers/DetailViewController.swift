@@ -11,6 +11,8 @@ import FirebaseAuth
 import Firebase
 import FirebaseFirestore
 
+
+
 class DetailViewController: UIViewController {
     
     var interactor:Interactor? = nil
@@ -178,21 +180,27 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+       
         if (collectionView == self.sectionTitleIndexCollectionView) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SectionTitleIndexCell", for: indexPath) as! SectionTitleIndexCollectionViewCell
             cell.sectionTitle = self.mealSections[indexPath.row]
+            print(indexPath)
+        
             return cell
         } else {
             if (indexPath.section == 0) && (indexPath.row == 0) {
+                print(indexPath)
                 let infoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "InfoCell", for: indexPath) as! InfoCollectionViewCell
                     infoCell.infoButtonCallback = {() -> () in
                         self.present(self.infoViewController, animated: true, completion: nil)
                 }
                 return infoCell
             } else if (indexPath.section == 0) && (indexPath.row == 1) {
+                print(indexPath)
                 let menuCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuCell", for: indexPath) as! MenuCollectionViewCell
                 return menuCell
             } else {
+                
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCollectionViewCell
                 let rows = Meal.loadMealsForSection(sectionName: self.mealSections[(indexPath.section-1)], meals: self.meals)
                 cell.meal = rows[indexPath.row]
@@ -200,6 +208,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
             }
         }
     }
+   
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if (collectionView == self.sectionTitleIndexCollectionView) {
@@ -276,15 +285,19 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
             let emptyCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionTitleIndexEmptyCell", for: indexPath)
             emptyCell.frame.size.height = 0
             emptyCell.frame.size.width = 0
+            print(indexPath)
             return emptyCell
         } else {
             if (kind == UICollectionView.elementKindSectionHeader) && (indexPath.section == 0) && (indexPath.row == 0) {
+                print(indexPath)
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DetailHeader", for: indexPath) as! DetailHeaderCollectionViewCell
                 self.delegate = header
                 return header
             } else if (kind == UICollectionView.elementKindSectionHeader) && (indexPath.section != 0) {
                 let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader", for: indexPath) as! SectionHeaderView
                 sectionHeader.title = self.mealSections[indexPath.section-1]
+                print(indexPath)
+                print(sectionHeader.title)
                 return sectionHeader
             } else {
                 let emptyCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "EmptyCell", for: indexPath)
@@ -303,17 +316,55 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout, UICollection
             return section == 0 ? CGSize(width: view.frame.width, height: view.frame.width*0.79625) : CGSize(width: view.frame.width, height: 50)
         }
     }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+      
         if (collectionView == self.sectionTitleIndexCollectionView) {
             let row = indexPath.row
             let indx = IndexPath(item: 0, section: row+1)
+            print(indx)
             self.collectionView.selectItem(at: indx, animated: true, scrollPosition: UICollectionView.ScrollPosition.top)
         } else {
-            let mealItemViewController = MealItemViewController()
-            present(mealItemViewController, animated: true, completion: nil)
+            print("here")
+            print(indexPath)
+        
+//            let cell = collectionView.cellForItem(at: indexPath) as? DetailCollectionViewCell
+            
+//            let collectionView = self.collectionView,
+//                        let indexPath = collectionView.indexPathsForSelectedItems?.first,
+//                        let cell = collectionView.cellForItem(at: indexPath) as? DetailCollectionViewCell,
+//            let data = cell?.data
+//            print(data)
+         
+            let indexPath = collectionView.indexPathsForSelectedItems?.first
+            let cell = collectionView.cellForItem(at: indexPath!) as? DetailCollectionViewCell
+            let rows = Meal.loadMealsForSection(sectionName: self.mealSections[(indexPath!.section-1)], meals: self.meals)
+            cell!.meal = rows[indexPath!.row]
+            let data = cell!.meal
+            print(data!)
+            
+            
+           
+           
+            
+           
+         
+//            let mealItemViewController = MealItemViewController()
+//            let mealItemViewController = CartViewController()
+            
+            let homeViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.cartViewController) as? CartViewController
+            self.view.window?.rootViewController = homeViewController
+            self.view.window?.makeKeyAndVisible()
+//            mealItemViewController.modalPresentationStyle = .overCurrentContext
+//            self.present(vc, animated: true)
+           
+//            self.storyboard?.instantiateViewController(withIdentifier: "CartVC")
+//            navigationController?.present(mealItemViewController, animated: true, completion: nil)
         }
     }
+
+    
 }
 protocol CoverImageDelegate {
     func updateImageHeight(height:CGFloat)

@@ -19,6 +19,8 @@ class DetailCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    var data : String?
+    
     var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
