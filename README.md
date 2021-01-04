@@ -17,7 +17,8 @@ Design, develop, test and deploy an iOS application which would allow resturants
 - Repetition: Involves using consistency across different screens for text, such that the user may become familiar with the interface and use less mental energy. Throughout the app I have carried a unified color scheme as well as font. This is to allow the user to get use to the app as well as providing some familiarity when using it.
 
 [<img src="https://user-images.githubusercontent.com/49186141/103506254-632c7280-4eb0-11eb-9e9f-f5af5516fe4e.pngg" align="left" width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506254-632c7280-4eb0-11eb-9e9f-f5af5516fe4e.png)
-[<img src="https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png" align="center" width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png)
+
+[<img src="https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png" align="left" width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png)
 
 - Alignment: Involves organizing information in a way that is ordered, structured and leads to a cohesive design. On the Menu detailpage, all the items and their types are left alligned which ensures a smoother and more intuitive user experience.
 
