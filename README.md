@@ -18,7 +18,7 @@ Design, develop, test and deploy an iOS application which would allow resturants
 
 [<img src="https://user-images.githubusercontent.com/49186141/103509751-eef5cd00-4eb7-11eb-8cbb-ece8b6761161.png"  width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506254-632c7280-4eb0-11eb-9e9f-f5af5516fe4e.png)
 
-[<img src="https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png"  width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png)
+[<img src="https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png"  align="centre" width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png)
 
 - Alignment: Involves organizing information in a way that is ordered, structured and leads to a cohesive design. On the Menu detailpage, all the items and their types are left alligned which ensures a smoother and more intuitive user experience.
 
