@@ -10,24 +10,17 @@ An iOS app which would allow users to place (& pay) order in a restaurant just b
 - iOS 8.0 or later
 
 # Design Principles (C.R.A.P)
-- Contrast: IInvolves making two different elements stand out, and it is usually used to draw a user’s attention to a specific element on that page. In the case of my app, a pop shows up when a button is clicked which blurs the background and draws the user's attention to the actions provided by the pop up
-
-[<img src="https://user-images.githubusercontent.com/49186141/103506268-6d4e7100-4eb0-11eb-94f0-0824190d3525.png" width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506268-6d4e7100-4eb0-11eb-94f0-0824190d3525.png)
-
-- Repetition: Involves using consistency across different screens for text, such that the user may become familiar with the interface and use less mental energy. Throughout the app I have carried a unified color scheme as well as font. This is to allow the user to get use to the app as well as providing some familiarity when using it.
-
-[<img src="https://user-images.githubusercontent.com/49186141/103509751-eef5cd00-4eb7-11eb-8cbb-ece8b6761161.png"  width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506254-632c7280-4eb0-11eb-9e9f-f5af5516fe4e.png)
-
-[<img src="https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png"  align="centre" width="200" hspace="10" vspace="10">](https://user-images.githubusercontent.com/49186141/103506284-73dce880-4eb0-11eb-9ac0-264e1563417e.png)
-
-- Alignment: Involves organizing information in a way that is ordered, structured and leads to a cohesive design. On the Menu detailpage, all the items and their types are left alligned which ensures a smoother and more intuitive user experience.
 
 ![43378304-059d4f7e-9394-11e8-85b8-7aefb9896e65](https://user-images.githubusercontent.com/49186141/103502969-06788a00-4ea7-11eb-9acd-23108f9e7da5.gif)
 
+- Contrast: IInvolves making two different elements stand out, and it is usually used to draw a user’s attention to a specific element on that page. In the case of my app, a pop shows up when a button is clicked which blurs the background and draws the user's attention to the actions provided by the pop up
+
+- Repetition: Involves using consistency across different screens for text, such that the user may become familiar with the interface and use less mental energy. Throughout the app I have carried a unified color scheme as well as font. This is to allow the user to get use to the app as well as providing some familiarity when using it.
+
+- Alignment: Involves organizing information in a way that is ordered, structured and leads to a cohesive design. On the Menu detailpage, all the items and their types are left alligned which ensures a smoother and more intuitive user experience.
+
+
 - Proximity: Involves elements that are related to each other, being placed closely together. This is a visual cue to the user if information is related to each other or not. In my application, all the relevant information regarding the resturant is clustered together closely at the top of the page, while menu items are placed on the bottom of the screen. 
-
-
-
 
 
 # Features Completed
