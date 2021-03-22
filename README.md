@@ -1,7 +1,7 @@
 # Restaurant iOS App
 
 # Description 
-Design, develop, test and deploy an iOS application which would allow resturants to sign up and add their menu. Resturants can then send an email through a click of a button from the app itself containing qr codes with their unique identifier stored. A customer can walk in and scan that QR code and place an order through the app and pay for that order. This app integrated cloud firestore to store user information and other objects. Uses C.R.A.P principles for better UI.
+An iOS app which would allow users to place (& pay) order in a restaurant just by scanning a QR code. Integrates with Cloud Firestore to store user information and orders. Special focus on C.R.A.P principles for better UI.
  
 # Build and Runtime Requirements
 
